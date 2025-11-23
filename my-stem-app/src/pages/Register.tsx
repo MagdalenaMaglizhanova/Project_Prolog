@@ -66,11 +66,6 @@ export default function Register() {
           {/* Left Side - Branding */}
           <div className="register-branding">
             <div className="brand-logo">
-              <div className="logo-wrapper">
-                <div className="logo-fallback">
-                  <i className="fas fa-lightbulb"></i>
-                </div>
-              </div>
               <div className="logo-text-container">
                 <span className="logo-text">IDEAS</span>
                 <span className="logo-subtitle">Innovation Platform</span>

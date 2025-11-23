@@ -75,38 +75,35 @@ export default function Dashboard() {
   return (
     <div className="dashboard">
       {/* SIDEBAR */}
-      <aside className="dashboard-sidebar">
-        <div className="sidebar-header">
-          <div className="user-welcome">
-            <div className="user-avatar">
-              <i className="fas fa-user"></i>
-            </div>
-            <div className="user-info">
-              <h3>Welcome back!</h3>
-              <p>{user?.email ?? "student@ideas.edu"}</p>
-            </div>
-          </div>
-        </div>
-
+       <aside className="dashboard-sidebar">
         <nav className="sidebar-nav">
-          <button
-            className={`nav-item ${selectedTab === "upload" ? "nav-item-active" : ""}`}
-            onClick={() => setSelectedTab("upload")}
-          >
-            <i className="fas fa-upload"></i>
-            <span>Upload Prolog Code</span>
-          </button>
+          {/* Променена секция - центрирано съдържание */}
+          <div className="user-info-centered">
+            <p className="user-email">{user?.email ?? "student@ideas.edu"}</p>
+            <h3>Welcome back!</h3>
+          </div>
+          
+          {/* Добавен контейнер за бутоните с отстъп отгоре */}
+          <div className="nav-buttons-container">
+            <button
+              className={`nav-item ${selectedTab === "upload" ? "nav-item-active" : ""}`}
+              onClick={() => setSelectedTab("upload")}
+            >
+              <i className="fas fa-upload"></i>
+              <span>Upload Prolog Code</span>
+            </button>
 
-          <button
-            className={`nav-item ${selectedTab === "submissions" ? "nav-item-active" : ""}`}
-            onClick={() => setSelectedTab("submissions")}
-          >
-            <i className="fas fa-history"></i>
-            <span>My Submissions</span>
-            {submissions.length > 0 && (
-              <span className="nav-badge">{submissions.length}</span>
-            )}
-          </button>
+            <button
+              className={`nav-item ${selectedTab === "submissions" ? "nav-item-active" : ""}`}
+              onClick={() => setSelectedTab("submissions")}
+            >
+              <i className="fas fa-history"></i>
+              <span>My Submissions</span>
+              {submissions.length > 0 && (
+                <span className="nav-badge">{submissions.length}</span>
+              )}
+            </button>
+          </div>
         </nav>
 
         <div className="sidebar-footer">
@@ -134,12 +131,8 @@ export default function Dashboard() {
           {/* UPLOAD TAB */}
           {selectedTab === "upload" && (
             <div className="upload-section">
-              <div className="section-header">
-                <h2>Write Your Prolog Code</h2>
-              </div>
-
               <textarea
-                className="code-editor"
+                className="code-editor-large"
                 placeholder={`% Write your Prolog code here...`}
                 value={code}
                 onChange={(e) => setCode(e.target.value)}

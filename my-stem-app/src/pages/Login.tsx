@@ -5,6 +5,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { useNavigate, Link } from "react-router-dom";
 import './Login.css';
 
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -58,11 +59,6 @@ export default function Login() {
         <div className="login-content">
           <div className="login-branding">
             <div className="brand-logo">
-              <div className="logo-wrapper">
-                <div className="logo-fallback">
-                  <i className="fas fa-lightbulb"></i>
-                </div>
-              </div>
               <div className="logo-text-container">
                 <span className="logo-text">IDEAS</span>
                 <span className="logo-subtitle">Innovation Platform</span>

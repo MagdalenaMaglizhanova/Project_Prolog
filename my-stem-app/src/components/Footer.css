@@ -26,57 +26,79 @@
   gap: 1.5rem;
 }
 
+/* Footer Logo - Същите стилове като в хедъра */
+/* Footer Logo - Същите стилове като в хедъра */
 .footer-logo {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease;
 }
 
-.logo-wrapper {
-  width: 45px;
-  height: 45px;
+.footer-logo:hover {
+  transform: translateY(-1px);
+}
+
+.footer-logo .logo-wrapper {
+  width: 50px;
+  height: 50px;
   position: relative;
+  transition: transform 0.3s ease;
+  background: white; /* ⬅️ ДОБАВЕНО - бял фон за контраст */
+  border-radius: 12px; /* ⬅️ ДОБАВЕНО - същия border-radius */
+  padding: 3px; /* ⬅️ ДОБАВЕНО - малко padding */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* ⬅️ ДОБАВЕНО - по-силен shadow */
 }
 
-.logo-image {
+.footer-logo:hover .logo-wrapper {
+  transform: scale(1.05);
+}
+
+.footer-logo .logo-image {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: 10px; /* ⬅ ДОБАВЕНО */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* ⬅ ДОБАВЕНО */
+  border-radius: 10px; /* ⬅️ Променено от 12px на 10px за визуален контраст */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.logo-fallback {
+.footer-logo .logo-fallback {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 45px;
-  height: 45px;
-  border-radius: 10px; /* ⬅ ДОБАВЕНО */
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
   background: linear-gradient(135deg, #3b82f6, #1d4ed8);
   color: white;
-  font-size: 1.2rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* ⬅ ДОБАВЕНО */
+  font-size: 1.3rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.logo-text-container {
+.footer-logo .logo-text-container {
   display: flex;
   flex-direction: column;
 }
 
-.logo-text {
+.footer-logo .logo-text {
   font-weight: 800;
-  font-size: 1.5rem;
-  color: #3b82f6;
+  font-size: 1.6rem;
+  color: #ffffff !important; /* ⬅️ Променено на бяло за тъмния фон */
   letter-spacing: -0.5px;
+  background: none !important;
+  _-webkit-background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* ⬅️ ДОБАВЕНО - за по-добра четимост */
 }
 
-.logo-subtitle {
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: #60a5fa;
-  margin-top: -2px;
+.footer-logo .logo-subtitle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #cbd5e1; /* ⬅️ Променено на по-светло сиво */
+  margin-top: -3px;
+  letter-spacing: 0.5px;
 }
 
 .footer-description {
@@ -212,4 +234,52 @@
   .footer-grid {
     gap: 1.5rem;
   }
+  
+  /* Responsive adjustments for footer logo */
+  .footer-logo .logo-wrapper {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .footer-logo .logo-fallback {
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
+  }
+  
+  .footer-logo .logo-text {
+    font-size: 1.4rem;
+  }
+  
+  .footer-logo .logo-subtitle {
+    font-size: 0.7rem;
+  }
+}
+
+/* Social Icons */
+.social-icon-img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  filter: brightness(0.8);
+  transition: all 0.3s ease;
+}
+
+.social-button:hover .social-icon-img {
+  filter: brightness(1);
+  transform: scale(1.1);
+}
+
+/* Ensure proper alignment */
+.social-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-button i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

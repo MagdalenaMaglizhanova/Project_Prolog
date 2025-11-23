@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import './Footer.css';
 
-const logo = '/images/logo.png'; // ⬅️ Същия подход като в Header
+const logo = '/images/logo.png';
+const facebookIcon = '/images/facebook.png';
+const twitterIcon = '/images/twitter.png';
+const instagramIcon = '/images/instagram.png';
 
 export default function Footer() {
   return (
@@ -38,11 +41,36 @@ export default function Footer() {
             </p>
             <div className="social-links">
               {[
-                { name: 'Facebook', icon: 'fab fa-facebook-f', url: 'https://facebook.com' },
-                { name: 'Twitter', icon: 'fab fa-twitter', url: 'https://twitter.com' },
-                { name: 'Instagram', icon: 'fab fa-instagram', url: 'https://instagram.com' },
-                { name: 'LinkedIn', icon: 'fab fa-linkedin-in', url: 'https://linkedin.com' },
-                { name: 'GitHub', icon: 'fab fa-github', url: 'https://github.com' }
+                { 
+                  name: 'Facebook', 
+                  icon: facebookIcon, 
+                  url: 'https://facebook.com',
+                  fallback: 'fab fa-facebook-f'
+                },
+                { 
+                  name: 'Twitter', 
+                  icon: twitterIcon, 
+                  url: 'https://twitter.com',
+                  fallback: 'fab fa-twitter'
+                },
+                { 
+                  name: 'Instagram', 
+                  icon: instagramIcon, 
+                  url: 'https://instagram.com',
+                  fallback: 'fab fa-instagram'
+                },
+                { 
+                  name: 'LinkedIn', 
+                  icon: null, 
+                  url: 'https://linkedin.com',
+                  fallback: 'fab fa-linkedin-in'
+                },
+                { 
+                  name: 'GitHub', 
+                  icon: null, 
+                  url: 'https://github.com',
+                  fallback: 'fab fa-github'
+                }
               ].map((social) => (
                 <a 
                   key={social.name}
@@ -52,7 +80,20 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className={social.icon}></i>
+                  {social.icon ? (
+                    <img 
+                      src={social.icon} 
+                      alt={`${social.name} icon`}
+                      className="social-icon-img"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const fallback = target.nextElementSibling as HTMLElement;
+                        if (fallback) fallback.style.display = 'flex';
+                      }}
+                    />
+                  ) : null}
+                  <i className={social.fallback} style={{ display: social.icon ? 'none' : 'flex' }}></i>
                 </a>
               ))}
             </div>

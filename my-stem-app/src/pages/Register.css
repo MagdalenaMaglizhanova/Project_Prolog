@@ -1,6 +1,7 @@
 /* Register Page Styles */
 .register-page {
   min-height: 100vh;
+  padding: 80px 0;
   position: relative;
   overflow: hidden;
 }

@@ -1,6 +1,7 @@
 /* Gamma.app Inspired Home Styles */
 .home-page {
   width: 100%;
+  padding-top: 80px; /* промени 80px с реалната височина на твоя header */
 }
 
 /* Hero Section - Gamma.app Style */
@@ -305,7 +306,7 @@
 }
 
 .img-1 {
-  width: 180px;
+  width: 200px;
   top: 10%;
   right: 10%;
   animation-delay: 0s;
@@ -313,7 +314,7 @@
 }
 
 .img-2 {
-  width: 220px;
+  width: 240px;
   top: 40%;
   right: 5%;
   animation-delay: -1.5s;
@@ -321,7 +322,7 @@
 }
 
 .img-3 {
-  width: 200px;
+  width: 220px;
   bottom: 20%;
   right: 15%;
   animation-delay: -3s;
@@ -329,7 +330,7 @@
 }
 
 .img-4 {
-  width: 160px;
+  width: 180px;
   top: 25%;
   right: 25%;
   animation-delay: -4.5s;
@@ -353,7 +354,7 @@
   padding: 6rem 0;
   background: 
     linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%),
-    url('/src/images/background.png'); /* ДОБАВЕН background.png */
+    url('/images/background.png'); /* ДОБАВЕН background.png */
   background-size: cover;
   background-position: center;
   background-blend-mode: overlay;
@@ -1131,5 +1132,180 @@
   
   .demo-section {
     padding: 4rem 0;
+  }
+}
+
+/* Анимиран код демо стилове */
+.demo-visual-content {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.demo-showcase {
+  background: #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid #333;
+}
+
+.showcase-window {
+  background: #1e1e1e;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.showcase-header {
+  background: #2d2d2d;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #333;
+}
+
+.showcase-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.showcase-control {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.showcase-control.red { background: #ff5f56; }
+.showcase-control.yellow { background: #ffbd2e; }
+.showcase-control.green { background: #27ca3f; }
+
+.showcase-title {
+  color: #888;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.code-preview {
+  background: #1e1e1e;
+}
+
+.code-tabs {
+  display: flex;
+  background: #252526;
+  border-bottom: 1px solid #333;
+  padding: 0 16px;
+}
+
+.code-tab {
+  padding: 8px 16px;
+  color: #888;
+  font-size: 0.85rem;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.code-tab.active {
+  color: #fff;
+  border-bottom-color: #007acc;
+}
+
+.code-area {
+  padding: 16px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  min-height: 300px;
+  background: #1e1e1e;
+}
+
+.code-line {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2px;
+  position: relative;
+  opacity: 0;
+  animation: fadeInUp 0.3s ease forwards;
+}
+
+.line-number {
+  color: #6e7681;
+  width: 40px;
+  text-align: right;
+  padding-right: 16px;
+  user-select: none;
+  font-size: 0.8rem;
+}
+
+.code-content {
+  flex: 1;
+  color: #d4d4d4;
+}
+
+/* Синтаксисно оцветяване */
+.code-comment {
+  color: #6a9955;
+}
+
+.code-keyword {
+  color: #569cd6;
+}
+
+.code-string {
+  color: #ce9178;
+}
+
+.code-variable {
+  color: #9cdcfe;
+}
+
+.code-query {
+  color: #dcdcaa;
+}
+
+.code-output {
+  color: #4ec9b0;
+}
+
+/* Анимация за курсора */
+.typing-cursor {
+  color: #569cd6;
+  animation: blink 1s infinite;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive дизайн */
+@media (max-width: 768px) {
+  .demo-visual-content {
+    max-width: 100%;
+  }
+  
+  .code-area {
+    font-size: 0.8rem;
+    padding: 12px;
+    min-height: 250px;
+  }
+  
+  .line-number {
+    width: 30px;
+    padding-right: 12px;
   }
 }

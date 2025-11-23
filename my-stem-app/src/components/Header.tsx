@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from "../context/AuthContext";
 import './Header.css';
 
-const logo = '/images/logo.png'; // ⬅️ Същия подход като в Footer
+const logo = '/images/logo.png'; 
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,9 +31,6 @@ export default function Header() {
     }
   };
 
-  const getUserInitial = () => {
-    return user?.email?.charAt(0).toUpperCase() || 'U';
-  };
 
   // Function to handle disabled links
   const handleDisabledLink = (e: React.MouseEvent) => {
@@ -136,9 +133,6 @@ export default function Header() {
             ) : (
               <div className="user-menu">
                 <div className="user-info">
-                  <div className="user-avatar">
-                    {getUserInitial()}
-                  </div>
                   <span>{user.email}</span>
                 </div>
                 <button 
@@ -263,9 +257,6 @@ export default function Header() {
           ) : (
             <>
               <div className="user-info" style={{marginBottom: '0.75rem', justifyContent: 'center'}}>
-                <div className="user-avatar">
-                  {getUserInitial()}
-                </div>
                 <span>{user.email}</span>
               </div>
               <button 

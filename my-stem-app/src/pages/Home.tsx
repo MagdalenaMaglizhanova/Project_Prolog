@@ -1,5 +1,137 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
 import './Home.css';
+
+function AnimatedCodeDemo() {
+  const [displayedCode, setDisplayedCode] = useState('');
+  const [currentLine, setCurrentLine] = useState(0);
+  const [isTyping, _setIsTyping] = useState(true);
+  const animationRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const codeLines = [
+    '% Define student knowledge base',
+    'studies(alice, ai).',
+    'studies(bob, robotics).',
+    'studies(charlie, biology).',
+    '',
+    '% Query: Who studies AI?',
+    '?- studies(Who, ai).',
+    '% Result: Who = alice'
+  ];
+
+  useEffect(() => {
+    if (isTyping && currentLine < codeLines.length) {
+      const currentText = codeLines[currentLine];
+      let charIndex = 0;
+      
+      if (animationRef.current) {
+        clearTimeout(animationRef.current);
+      }
+
+      const typeLine = () => {
+        if (charIndex <= currentText.length) {
+          setDisplayedCode(prev => {
+            const lines = prev.split('\n');
+            lines[currentLine] = currentText.substring(0, charIndex);
+            return lines.join('\n');
+          });
+          charIndex++;
+          animationRef.current = setTimeout(typeLine, charIndex === 0 ? 500 : Math.random() * 50 + 30);
+        } else {
+          setTimeout(() => {
+            setCurrentLine(prev => prev + 1);
+          }, 200);
+        }
+      };
+
+      typeLine();
+    } else if (currentLine >= codeLines.length) {
+      setTimeout(() => {
+        setDisplayedCode('');
+        setCurrentLine(0);
+      }, 3000);
+    }
+
+    return () => {
+      if (animationRef.current) {
+        clearTimeout(animationRef.current);
+      }
+    };
+  }, [currentLine, isTyping]);
+
+  const renderCodeWithSyntaxHighlighting = () => {
+    return displayedCode.split('\n').map((line, index) => {
+      let formattedLine = line;
+      
+      if (line.startsWith('%')) {
+        formattedLine = `<span class="code-comment">${line}</span>`;
+      }
+      else if (line.includes('studies(')) {
+        formattedLine = line
+          .replace(/studies/g, '<span class="code-keyword">studies</span>')
+          .replace(/(alice|bob|charlie)/g, '<span class="code-string">$1</span>')
+          .replace(/(ai|robotics|biology)/g, '<span class="code-variable">$1</span>');
+      }
+      else if (line.startsWith('?-')) {
+        formattedLine = line
+          .replace(/\?-/g, '<span class="code-query">?-</span>')
+          .replace(/studies/g, '<span class="code-keyword">studies</span>')
+          .replace(/Who/g, '<span class="code-variable">Who</span>')
+          .replace(/ai/g, '<span class="code-string">ai</span>');
+      }
+      else if (line.startsWith('% Result:')) {
+        formattedLine = `<span class="code-output">${line}</span>`;
+      }
+      else if (line === '') {
+        formattedLine = '&nbsp;';
+      }
+
+      return (
+        <div key={index} className="code-line">
+          <span className="line-number">{index + 1}</span>
+          <span 
+            className="code-content"
+            dangerouslySetInnerHTML={{ __html: formattedLine }}
+          />
+          {index === currentLine - 1 && isTyping && (
+            <span className="typing-cursor">|</span>
+          )}
+        </div>
+      );
+    });
+  };
+
+  return (
+    <div className="demo-visual-content">
+      <div className="demo-showcase">
+        <div className="showcase-window">
+          <div className="showcase-header">
+            <div className="showcase-controls">
+              <div className="showcase-control red"></div>
+              <div className="showcase-control yellow"></div>
+              <div className="showcase-control green"></div>
+            </div>
+            <div className="showcase-title">IDEAS Platform - Live Demo</div>
+          </div>
+          
+          <div className="showcase-body">
+            <div className="code-preview">
+              <div className="code-tabs">
+                <div className="code-tab active">student.pl</div>
+                <div className="code-tab">query.pl</div>
+                <div className="code-tab">results.pl</div>
+              </div>
+              
+              <div className="code-area">
+                {renderCodeWithSyntaxHighlighting()}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
@@ -278,79 +410,8 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="demo-visual-content">
-        <div className="demo-showcase">
-          <div className="showcase-window">
-            <div className="showcase-header">
-              <div className="showcase-controls">
-                <div className="showcase-control red"></div>
-                <div className="showcase-control yellow"></div>
-                <div className="showcase-control green"></div>
-              </div>
-              <div className="showcase-title">IDEAS Platform - Live Demo</div>
-            </div>
-            
-            <div className="showcase-body">
-              <div className="code-preview">
-                <div className="code-tabs">
-                  <div className="code-tab active">student.pl</div>
-                  <div className="code-tab">query.pl</div>
-                  <div className="code-tab">results.pl</div>
-                </div>
-                
-                <div className="code-area">
-                  <div className="code-line">
-                    <span className="line-number">1</span>
-                    <span className="code-comment">% Define student knowledge base</span>
-                  </div>
-                  <div className="code-line">
-                    <span className="line-number">2</span>
-                    <span className="code-keyword">studies</span>(<span className="code-string">alice</span>, <span className="code-variable">ai</span>).
-                  </div>
-                  <div className="code-line">
-                    <span className="line-number">3</span>
-                    <span className="code-keyword">studies</span>(<span className="code-string">bob</span>, <span className="code-variable">robotics</span>).
-                  </div>
-                  <div className="code-line">
-                    <span className="line-number">4</span>
-                    <span className="code-keyword">studies</span>(<span className="code-string">charlie</span>, <span className="code-variable">biology</span>).
-                  </div>
-                  <div className="code-line">
-                    <span className="line-number">5</span>
-                  </div>
-                  <div className="code-line">
-                    <span className="line-number">6</span>
-                    <span className="code-comment">% Query: Who studies AI?</span>
-                  </div>
-                  <div className="code-line">
-                    <span className="line-number">7</span>
-                    <span className="code-keyword">?- studies</span>(<span className="code-variable">Who</span>, <span className="code-variable">ai</span>).
-                  </div>
-                  <div className="code-line">
-                    <span className="line-number">8</span>
-                    <span className="code-output">% Result: Who = alice</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="demo-stats">
-                <div className="demo-stat">
-                  <div className="stat-value">95%</div>
-                  <div className="stat-label">Student Engagement</div>
-                </div>
-                <div className="demo-stat">
-                  <div className="stat-value">2x</div>
-                  <div className="stat-label">Faster Learning</div>
-                </div>
-                <div className="demo-stat">
-                  <div className="stat-value">100+</div>
-                  <div className="stat-label">Active Projects</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Заменен статичния код с анимирания компонент */}
+      <AnimatedCodeDemo />
     </div>
   </div>
 </section>
