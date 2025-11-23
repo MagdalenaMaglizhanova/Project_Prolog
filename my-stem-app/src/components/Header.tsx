@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from "../context/AuthContext";
-import logo from '../images/logo.png';
 import './Header.css';
+
+const logo = '/images/logo.png'; // ⬅️ Същия подход като в Footer
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -45,11 +46,11 @@ export default function Header() {
     <header className={`header ${scrolled ? 'header-scrolled' : ''}`}>
       <div className="header-container">
 
-        {/* Logo - FIXED: Blue text color */}
+        {/* Logo */}
         <Link to="/" className="logo-section">
           <div className="logo-wrapper">
             <img
-              src={logo}
+              src={logo} // ✅ Използваме константата
               alt="IDEAS Logo"
               className="logo-image"
               onError={(e) => {
@@ -64,7 +65,7 @@ export default function Header() {
             </div>
           </div>
           <div className="logo-text-container">
-            <span className="logo-text" style={{ color: '#2563eb', background: 'none', WebkitBackgroundClip: 'unset', WebkitTextFillColor: 'unset' }}>IDEAS</span>
+            <span className="logo-text">IDEAS</span>
             <span className="logo-subtitle">Innovation Platform</span>
           </div>
         </Link>

@@ -79,10 +79,10 @@ export default function Home() {
             {/* Right Side - Animated Graphics */}
             <div className="hero-visual">
               <div className="floating-graphics">
-                <img src="/src/images/1.png" alt="AI Education" className="floating-img img-1" />
-                <img src="/src/images/2.png" alt="STEM Learning" className="floating-img img-2" />
-                <img src="/src/images/3.png" alt="Coding Platform" className="floating-img img-3" />
-                <img src="/src/images/4.png" alt="Robotics" className="floating-img img-4" />
+                <img src="/images/1.png" alt="AI Education" className="floating-img img-1" />
+                <img src="/images/2.png" alt="STEM Learning" className="floating-img img-2" />
+                <img src="/images/3.png" alt="Coding Platform" className="floating-img img-3" />
+                <img src="/images/4.png" alt="Robotics" className="floating-img img-4" />
               </div>
             </div>
           </div>
@@ -107,7 +107,7 @@ export default function Home() {
         {/* ПРЕМАХНАТ card-background */}
         <div className="card-content">
           <div className="feature-icon">
-            <img src="/src/images/01.png" alt="AI Learning" className="feature-image" />
+            <img src="/images/01.png" alt="AI Learning" className="feature-image" />
           </div>
           <h3>AI-Powered Learning</h3>
           <p>Interactive tutorials and intelligent feedback systems that adapt to each student's learning pace.</p>
@@ -123,7 +123,7 @@ export default function Home() {
       <div className="gamma-feature-card">
         <div className="card-content">
           <div className="feature-icon">
-            <img src="/src/images/02.png" alt="Collaboration" className="feature-image" />
+            <img src="/images/02.png" alt="Collaboration" className="feature-image" />
           </div>
           <h3>Real-time Collaboration</h3>
           <p>Students work together on projects with live editing and instant feedback.</p>
@@ -139,7 +139,7 @@ export default function Home() {
       <div className="gamma-feature-card">
         <div className="card-content">
           <div className="feature-icon">
-            <img src="/src/images/03.png" alt="Projects" className="feature-image" />
+            <img src="/images/03.png" alt="Projects" className="feature-image" />
           </div>
           <h3>Hands-on Projects</h3>
           <p>Practical STEM projects that apply logical programming to real-world problems.</p>
@@ -155,7 +155,7 @@ export default function Home() {
       <div className="gamma-feature-card">
         <div className="card-content">
           <div className="feature-icon">
-            <img src="/src/images/04.png" alt="Analytics" className="feature-image" />
+            <img src="/images/04.png" alt="Analytics" className="feature-image" />
           </div>
           <h3>Progress Analytics</h3>
           <p>Detailed insights into student performance and learning patterns.</p>
@@ -171,7 +171,7 @@ export default function Home() {
       <div className="gamma-feature-card">
         <div className="card-content">
           <div className="feature-icon">
-            <img src="/src/images/01.png" alt="Curriculum" className="feature-image" />
+            <img src="/images/01.png" alt="Curriculum" className="feature-image" />
           </div>
           <h3>Curriculum Integration</h3>
           <p>Seamlessly fits into existing STEM curricula with ready-to-use lesson plans.</p>
@@ -187,7 +187,7 @@ export default function Home() {
       <div className="gamma-feature-card">
         <div className="card-content">
           <div className="feature-icon">
-            <img src="/src/images/02.png" alt="Industry Skills" className="feature-image" />
+            <img src="/images/02.png" alt="Industry Skills" className="feature-image" />
           </div>
           <h3>Industry Ready Skills</h3>
           <p>Prepares students for careers in AI, data science, and technology.</p>

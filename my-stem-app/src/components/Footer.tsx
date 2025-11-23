@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import './Footer.css';
-import logo from '../images/logo.png';
+
+const logo = '/images/logo.png'; // ⬅️ Същия подход като в Header
 
 export default function Footer() {
   return (
@@ -77,6 +78,7 @@ export default function Footer() {
               ))}
             </ul>
           </div>
+          
           {/* Support Links */}
           <div className="footer-links">
             <h4 className="footer-heading">Support</h4>
