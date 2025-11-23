@@ -1,0 +1,19 @@
+/* ===========================
+   App Root Layout
+   =========================== */
+
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+  padding-top: 100px; /* за фиксирано меню */
+  min-height: calc(100vh - 100px);
+}
+
+.app-page {
+  width: 100%;
+}

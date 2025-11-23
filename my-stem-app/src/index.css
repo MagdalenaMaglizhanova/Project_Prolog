@@ -1,0 +1,67 @@
+/* ===========================
+   Global Reset & Base Styles
+   =========================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: "Inter", sans-serif;
+  background-color: #f5f6fa;
+  color: #1c1e21;
+}
+
+/* Scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ===========================
+   Root Variables
+   =========================== */
+:root {
+  --primary: #4a90e2;
+  --primary-dark: #2774c4;
+  --text-main: #1c1e21;
+  --text-light: #666;
+  --bg-light: #ffffff;
+  --bg-gray: #f1f2f6;
+}
+
+/* ===========================
+   Utility Classes
+   =========================== */
+
+/* Layout helpers */
+.full-height {
+  min-height: 100vh;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Spacing helpers */
+.pt-header {
+  padding-top: 100px;
+}
+
+/* Text utilities */
+.text-center {
+  text-align: center;
+}
+
