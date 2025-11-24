@@ -21,7 +21,9 @@
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 110px); /* ⬅️ Адаптирана височина */
+  height: 100%; /* вместо calc(...) */
+  flex: 1;       /* позволяваме flex да контролира */
+  min-height: 0;  
   overflow: hidden;
 }
 
@@ -45,13 +47,16 @@
 .chat-avatar {
   width: 50px;
   height: 50px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
+  flex-shrink: 0;
 }
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 
 .header-info h2 {
   margin: 0;
@@ -104,6 +109,7 @@
   flex-direction: column;
   gap: 16px;
   min-height: 0; /* ⬅️ Важно за flex scrolling */
+  scroll-behavior: smooth;
 }
 
 .message-wrapper {
@@ -138,11 +144,11 @@
   justify-content: center;
   font-size: 1rem;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .bot-avatar {
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: white;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
 }
 
 .user-avatar {
@@ -157,6 +163,11 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   position: relative;
   min-width: 120px;
+}
+
+.message-bubble.thinking {
+  background: #f3f4f6 !important;
+  border: 1px dashed #d1d5db !important;
 }
 
 .user-message .message-bubble {
@@ -176,6 +187,19 @@
   line-height: 1.5;
   font-size: 0.95rem;
   white-space: pre-wrap;
+}
+
+.thinking-animation {
+  font-family: monospace;
+  font-weight: bold;
+  letter-spacing: 3px;
+  animation: dotPulse 1.5s infinite;
+}
+
+@keyframes dotPulse {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
 }
 
 .message-time {
@@ -230,6 +254,7 @@
   display: flex;
   gap: 12px;
   align-items: center;
+  width: 100%;
 }
 
 .chat-input {
@@ -241,6 +266,7 @@
   outline: none;
   transition: all 0.3s ease;
   background: #f9fafb;
+  box-sizing: border-box;
 }
 
 .chat-input:focus {
@@ -267,6 +293,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.1rem;
+  flex-shrink: 0;
 }
 
 .send-button:hover:not(:disabled) {
@@ -455,5 +482,9 @@
   
   .input-container {
     padding: 12px;
+  }
+  
+  .message-content {
+    max-width: 90%;
   }
 }

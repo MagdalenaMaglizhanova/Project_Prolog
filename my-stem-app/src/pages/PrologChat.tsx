@@ -33,7 +33,11 @@ export default function PrologChat() {
 
   const scrollToBottom = () =>
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  useEffect(() => scrollToBottom(), [messages]);
+  useEffect(() => {
+  const timeout = setTimeout(scrollToBottom, 0); 
+  return () => clearTimeout(timeout);
+}, [messages]);
+
 
   // Load all Prolog codes from database
   useEffect(() => {
@@ -105,6 +109,28 @@ export default function PrologChat() {
     if (!codeToUse) return;
 
     setIsLoading(true);
+
+    // Add thinking message with dots animation
+    const thinkingMsg: Message = {
+      user: false,
+      text: "●", // Start with one dot
+      id: "thinking-" + Date.now().toString(),
+      timestamp: new Date(),
+    };
+    setMessages(prev => [...prev, thinkingMsg]);
+
+    // Animate the dots
+    let dotCount = 1;
+    const dotInterval = setInterval(() => {
+      dotCount = (dotCount % 3) + 1;
+      const dots = "●".repeat(dotCount);
+      setMessages(prev => 
+        prev.map(msg => 
+          msg.id === thinkingMsg.id ? { ...msg, text: dots } : msg
+        )
+      );
+    }, 500);
+
     try {
       const res = await fetch("https://prolog.onrender.com/prolog-run", {
         method: "POST",
@@ -113,6 +139,11 @@ export default function PrologChat() {
       });
 
       const text = await res.text();
+      
+      // Clear interval and remove thinking message
+      clearInterval(dotInterval);
+      setMessages(prev => prev.filter(msg => msg.id !== thinkingMsg.id));
+      
       const botMsg: Message = {
         user: false,
         text,
@@ -121,6 +152,9 @@ export default function PrologChat() {
       };
       setMessages(prev => [...prev, botMsg]);
     } catch (err: any) {
+      // Clear interval and remove thinking message, then add error
+      clearInterval(dotInterval);
+      setMessages(prev => prev.filter(msg => msg.id !== thinkingMsg.id));
       setMessages(prev => [...prev, {
         user: false,
         text: `❌ Error: ${err.message}`,
@@ -129,6 +163,13 @@ export default function PrologChat() {
       }]);
     }
     setIsLoading(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // Prevent form submission and page jump
+      sendQuery();
+    }
   };
 
   const formatCode = (code: string) =>
@@ -148,9 +189,11 @@ export default function PrologChat() {
         <div className="chat-window">
           <div className="chat-header">
             <div className="header-left">
-              <div className="chat-avatar"><i className="fas fa-robot"></i></div>
+              <div className="chat-avatar">
+                <img src="/images/logo_shevici.jpg" alt="Digital Bulgaria in Prolog" className="avatar-image" />
+              </div>
               <div className="header-info">
-                <h2>Prolog Assistant</h2>
+                <h2>Digital Bulgaria in Prolog</h2>
                 <p>{isLoadingCode ? "🔍 Loading codes..." : activeCode ? `✅ Code ${activeCode.id} active` : "❌ No active code"}</p>
               </div>
             </div>
@@ -173,12 +216,24 @@ export default function PrologChat() {
             {(messages.length === 0 ? [{ user: false, text: "🤖 Welcome! Enter any Prolog query to start.", id: "welcome", timestamp: new Date() }] : messages).map(msg => (
               <div key={msg.id} className={`message-wrapper ${msg.user ? "user-message" : "bot-message"}`}>
                 <div className="message-content">
-                  {!msg.user && <div className="message-avatar bot-avatar"><i className="fas fa-robot"></i></div>}
-                  <div className="message-bubble">
-                    <div className="message-text">{msg.text.split("\n").map((line,i) => <div key={i}>{line}</div>)}</div>
+                  {!msg.user && (
+                    <div className="message-avatar bot-avatar">
+                      <img src="/images/logo_shevici.jpg" alt="Bot Avatar" className="avatar-image" />
+                    </div>
+                  )}
+                  <div className={`message-bubble ${msg.id.startsWith('thinking-') ? 'thinking' : ''}`}>
+                    <div className={`message-text ${msg.id.startsWith('thinking-') ? 'thinking-animation' : ''}`}>
+                      {msg.text.split("\n").map((line,i) => <div key={i}>{line}</div>)}
+                    </div>
                     <div className="message-time">{msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>
                   </div>
-                  {msg.user && <div className="message-avatar user-avatar"><i className="fas fa-user"></i></div>}
+                  {msg.user && (
+                    <div className="message-avatar user-avatar">
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+    </svg>
+  </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -186,25 +241,29 @@ export default function PrologChat() {
           </div>
 
           <div className="input-container">
-            <div className="input-wrapper">
-              <input
-                type="text"
-                value={query}
-                onChange={e => setQuery(e.target.value)}
-                onKeyDown={e => e.key === "Enter" && sendQuery()}
-                placeholder={isLoadingCode ? "Loading Prolog code..." : "Enter your Prolog query"}
-                className="chat-input"
-                disabled={isLoading || isLoadingCode}
-              />
-              <button
-                onClick={() => sendQuery()}
-                disabled={isLoading || isLoadingCode || !query.trim()}
-                className="send-button"
-              >
-                {isLoading ? <i className="fas fa-spinner fa-spin"></i> : <i className="fas fa-paper-plane"></i>}
-              </button>
-            </div>
-          </div>
+  <form onSubmit={(e) => e.preventDefault()}>
+    <div className="input-wrapper">
+      <input
+        type="text"
+        value={query}
+        onChange={e => setQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder={isLoadingCode ? "Loading Prolog code..." : "Enter your Prolog query"}
+        className="chat-input"
+        disabled={isLoading || isLoadingCode}
+      />
+      <button
+        type="button"   // <-- важно!
+        onClick={() => sendQuery()}
+        disabled={isLoading || isLoadingCode || !query.trim()}
+        className="send-button"
+      >
+        {isLoading ? <i className="fas fa-spinner fa-spin"></i> : <i className="fas fa-paper-plane"></i>}
+      </button>
+    </div>
+  </form>
+</div>
+
         </div>
       </div>
 

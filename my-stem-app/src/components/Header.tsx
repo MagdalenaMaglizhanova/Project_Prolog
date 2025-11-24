@@ -31,11 +31,8 @@ export default function Header() {
     }
   };
 
-
-  // Function to handle disabled links
   const handleDisabledLink = (e: React.MouseEvent) => {
     e.preventDefault();
-    // Optional: Show a toast or message that user needs to login
     console.log('Please login to access this page');
   };
 
@@ -47,7 +44,7 @@ export default function Header() {
         <Link to="/" className="logo-section">
           <div className="logo-wrapper">
             <img
-              src={logo} // ✅ Използваме константата
+              src={logo}
               alt="IDEAS Logo"
               className="logo-image"
               onError={(e) => {
@@ -76,7 +73,6 @@ export default function Header() {
             <i className="fas fa-home"></i> Home
           </Link>
 
-          {/* Always show navigation links, but disable for non-logged users */}
           <Link
             to={user ? "/topics" : "#"}
             className={`nav-link ${!user ? "nav-link-disabled" : ""} ${isActiveRoute("/topics") ? "nav-link-active" : ""}`}
@@ -101,7 +97,6 @@ export default function Header() {
             <i className="fas fa-chart-line"></i> Dashboard
           </Link>
 
-          {/* New Button for Prolog Chat - Only for logged in users */}
           {user && (
             <Link
               to="/chat"
@@ -133,7 +128,7 @@ export default function Header() {
             ) : (
               <div className="user-menu">
                 <div className="user-info">
-                  <span>{user.email}</span>
+                  <span className="user-email">{user.email}</span>
                 </div>
                 <button 
                   className="logout-button"
@@ -141,7 +136,7 @@ export default function Header() {
                   title="Logout"
                 >
                   <i className="fas fa-sign-out-alt"></i>
-                  Logout
+                  <span className="logout-text">Logout</span>
                 </button>
               </div>
             )}
@@ -177,7 +172,6 @@ export default function Header() {
             <i className="fas fa-home"></i> Home
           </Link>
 
-          {/* Mobile navigation links - always visible but disabled for non-logged users */}
           <Link
             to={user ? "/topics" : "#"}
             className={`mobile-nav-link ${!user ? "nav-link-disabled" : ""} ${isActiveRoute("/topics") ? "mobile-nav-link-active" : ""}`}
@@ -223,7 +217,6 @@ export default function Header() {
             <i className="fas fa-chart-line"></i> Dashboard
           </Link>
 
-          {/* Mobile Prolog Chat Button - Only for logged in users */}
           {user && (
             <Link
               to="/chat"
@@ -256,8 +249,8 @@ export default function Header() {
             </>
           ) : (
             <>
-              <div className="user-info" style={{marginBottom: '0.75rem', justifyContent: 'center'}}>
-                <span>{user.email}</span>
+              <div className="mobile-user-info">
+                <span className="mobile-user-email">{user.email}</span>
               </div>
               <button 
                 className="mobile-logout-button"
