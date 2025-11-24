@@ -190,7 +190,7 @@ export default function PrologChat() {
           <div className="chat-header">
             <div className="header-left">
               <div className="chat-avatar">
-                <img src="/images/logo_shevici.jpg" alt="Digital Bulgaria in Prolog" className="avatar-image" />
+                <img src="/images/logo_shevici.jpg" alt="Digital Bulgaria" className="avatar-image" />
               </div>
               <div className="header-info">
                 <h2>Digital Bulgaria in Prolog</h2>
