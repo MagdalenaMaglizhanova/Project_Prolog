@@ -34,8 +34,9 @@ export default function PrologChat() {
   const scrollToBottom = () =>
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   useEffect(() => {
-  const timeout = setTimeout(scrollToBottom, 0); 
-  return () => clearTimeout(timeout);
+  requestAnimationFrame(() => {
+    scrollToBottom();
+  });
 }, [messages]);
 
 
