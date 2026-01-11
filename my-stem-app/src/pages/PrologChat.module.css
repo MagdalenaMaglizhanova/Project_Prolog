@@ -598,7 +598,6 @@
   cursor: not-allowed;
 }
 
-/* 🔹 ЧАТ ПРОЗОРЕЦ - ОПРАВЕН ЗА ДА НЯМА ОТСКАЧАНЕ */
 .chatWindow {
   background: white;
   border-radius: 20px;
@@ -606,11 +605,12 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 350px);
-  min-height: 500px;
-  max-height: 800px; /* Максимална височина за да предотврати прекалено разтягане */
+  flex: 1; /* ← Ключова промяна: разтяга се */
+  min-height: 400px; /* ← Минимална височина */
   border: 1px solid #e2e8f0;
+  overflow: hidden; /* ← Предотвратява излитане */
 }
+
 
 .messagesContainer {
   flex: 1;
@@ -1951,18 +1951,6 @@
   min-height: 600px;
 }
 
-/* Контейнер за съобщения */
-.messagesContainer {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-  background: #f9fafb;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-height: 400px;
-  transition: max-height 0.3s ease;
-}
 
 .messagesContainerExpanded {
   max-height: 60vh !important;
@@ -2108,4 +2096,279 @@
     width: 100%;
     justify-content: space-between;
   }
+}
+
+/* Combined Navigation Container */
+.combinedNavigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding: 0 10px;
+  flex-wrap: wrap;
+}
+
+.combinedNavigationDark {
+  background-color: #1a1a1a;
+}
+
+/* Tabs Section */
+.tabsSection {
+  flex: 1;
+  min-width: 300px;
+}
+
+.tabNavigation {
+  display: flex;
+  gap: 10px;
+  background: #f8f9fa;
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.tabNavigationDark {
+  background: #2d3748;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.tabButton {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #666;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.tabButtonDark {
+  color: #a0aec0;
+}
+
+.tabButton:hover {
+  background: #e9ecef;
+  color: #333;
+}
+
+.tabButtonDark:hover {
+  background: #4a5568;
+  color: #fff;
+}
+
+.tabButtonActive {
+  background: #4f46e5 !important;
+  color: white !important;
+  box-shadow: 0 2px 5px rgba(79, 70, 229, 0.3);
+}
+
+/* Status Section */
+.statusSection {
+  flex-shrink: 0;
+}
+
+.domainStatusBar {
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  border: 1px solid #bae6fd;
+  border-radius: 12px;
+  padding: 10px 20px;
+  min-width: 250px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.domainStatusBarDark {
+  background: linear-gradient(135deg, #1e3a8a, #1e40af);
+  border-color: #3b82f6;
+}
+
+.domainStatusContent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.domainStatusIcon {
+  color: #10b981;
+  font-size: 18px;
+}
+
+.domainStatusBarDark .domainStatusIcon {
+  color: #34d399;
+}
+
+.domainStatusText {
+  color: #374151;
+  font-size: 14px;
+}
+
+.domainStatusTextDark {
+  color: #e5e7eb;
+}
+
+.domainLoading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #f59e0b;
+  font-size: 12px;
+  background: rgba(245, 158, 11, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .combinedNavigation {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .tabsSection {
+    width: 100%;
+  }
+  
+  .statusSection {
+    width: 100%;
+  }
+  
+  .domainStatusBar {
+    min-width: auto;
+  }
+  
+  .tabButton {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+.compactPanelsContainer {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.systemCommandsCompact, .fileCommandsCompact {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  background: #f8f9fa;
+}
+
+.systemCommandsDark, .fileCommandsDark {
+  background: #2d2d2d;
+}
+
+.commandsHeaderCompact {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.headerLabel {
+  font-size: 12px;
+}
+
+.commandsRow {
+  display: flex;
+  gap: 4px;
+}
+
+.commandButtonTiny {
+  flex: 1;
+  padding: 6px 2px;
+  border-radius: 4px;
+  font-size: 12px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fileInputRow {
+  display: flex;
+  gap: 4px;
+}
+
+.fileNameInputTiny {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  min-width: 0;
+}
+
+.fileButtonsRow {
+  display: flex;
+  gap: 4px;
+}
+
+.fileCommandButtonTiny {
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  min-width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Икони */
+.commandButtonTiny i, .fileCommandButtonTiny i {
+  font-size: 13px;
+}
+
+.chatExpandedFull {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  margin: 0;
+  border-radius: 0;
+}
+
+.messagesContainerFull {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* Добавете тези класове или променете съществуващите */
+
+/* Контейнер за всичко основно (след сайдбара) */
+.mainContentWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  gap: 1rem;
+}
+
+/* Контейнер за командите и чата */
+.commandsChatContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  gap: 1rem;
+}
+
+/* Контейнер за двата панела - компактния вариант */
+.compactPanelsContainer {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0;
+  flex-shrink: 0; /* Не се свива */
 }

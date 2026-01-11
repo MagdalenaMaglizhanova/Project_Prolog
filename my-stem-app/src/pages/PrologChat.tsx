@@ -70,7 +70,7 @@ export default function PrologChat() {
     { 
       id: "balkan", 
       label: t('balkan') || 'Central Balkan', 
-      icon: "fas fa-tint", 
+      icon: "fas fa-mountain", 
       description: t('balkan_description') || 'Balkan sources and properties', 
       color: "#9D4EDD" 
     }
@@ -156,30 +156,8 @@ export default function PrologChat() {
         }
       }
     },
-    { 
-      label: t('unload_file') || 'Unload File', 
-      icon: "fas fa-file-export", 
-      color: "#FF4757",
-      tooltip: t('unload_file_tooltip') || 'Unload a Prolog file',
-      action: () => {
-        if (fileNameInput.trim()) {
-          sendQuery(`unload_file('${fileNameInput.trim()}').`);
-          setFileNameInput("");
-        }
-      }
-    },
-    { 
-      label: t('switch_file') || 'Switch File', 
-      icon: "fas fa-exchange-alt", 
-      color: "#9D4EDD",
-      tooltip: t('switch_file_tooltip') || 'Switch to another file',
-      action: () => {
-        if (fileNameInput.trim()) {
-          sendQuery(`switch_file('${fileNameInput.trim()}').`);
-          setFileNameInput("");
-        }
-      }
-    },
+    
+
   ];
 
   const scrollToBottom = () => {
@@ -543,14 +521,6 @@ export default function PrologChat() {
                 <i className="fas fa-layer-group"></i> 
                 {t('knowledge_domains') || 'Knowledge Domains'}
               </h4>
-              <button 
-                onClick={clearChat}
-                className={`${styles.clearDomainButton} ${theme === 'dark' ? styles.clearDomainButtonDark : ''}`}
-                title={t('clear_domain') || 'Clear domain'}
-                disabled={isLoadingDomain || !selectedDomain}
-              >
-                <i className="fas fa-times"></i>
-              </button>
             </div>
             <div className={styles.domainGrid}>
               {domains.map(domain => (
@@ -602,125 +572,72 @@ export default function PrologChat() {
               </div>
             </div>
           </div>
-
-          {/* TAB NAVIGATION */}
-          <div className={`${styles.tabNavigation} ${theme === 'dark' ? styles.tabNavigationDark : ''}`}>
-            <button
-              className={`${styles.tabButton} ${activeTab === "chat" ? styles.tabButtonActive : ''} ${theme === 'dark' ? styles.tabButtonDark : ''}`}
-              onClick={() => setActiveTab("chat")}
-            >
-              <i className="fas fa-comments"></i>
-              {t('chat') || 'Chat'}
-            </button>
-            <button
-              className={`${styles.tabButton} ${activeTab === "code" ? styles.tabButtonActive : ''} ${theme === 'dark' ? styles.tabButtonDark : ''}`}
-              onClick={() => setActiveTab("code")}
-            >
-              <i className="fas fa-code"></i>
-              {t('code_preview') || 'Code Preview'}
-            </button>
-            <button
-              className={`${styles.tabButton} ${theme === 'dark' ? styles.tabButtonDark : ''}`}
-              onClick={() => window.location.href = '/dashboard?tab=upload'}
-            >
-              <i className="fas fa-upload"></i>
-              {t('upload_code') || 'Upload Code'}
-            </button>
-          </div>
         </div>
-
-        {/* Domain Status */}
-        {selectedDomain && (
-          <div className={`${styles.domainStatusBar} ${theme === 'dark' ? styles.domainStatusBarDark : ''}`}>
-            <div className={styles.domainStatusContent}>
-              <span className={styles.domainStatusIcon}>
-                <i className="fas fa-check-circle"></i>
-              </span>
-              <span className={`${styles.domainStatusText} ${theme === 'dark' ? styles.domainStatusTextDark : ''}`}>
-                {t('active_domain') || 'Active domain'}: <strong>{selectedDomain}</strong>
-                {" • "}
-                {t('api_server') || 'API'}: <strong>prolog-api-server-1.onrender.com</strong>
-              </span>
-              {isLoadingDomain && (
-                <span className={styles.domainLoading}>
-                  <i className="fas fa-spinner fa-spin"></i> {t('loading_domain') || 'Loading domain'}...
-                </span>
-              )}
-            </div>
-          </div>
-        )}
-
         <div className={`${styles.content} ${theme === 'dark' ? styles.contentDark : ''}`}>
           {/* CHAT TAB */}
           {activeTab === "chat" && (
             <div className={styles.chatSection}>
-              {/* SYSTEM COMMANDS */}
-              <div className={`${styles.systemCommands} ${theme === 'dark' ? styles.systemCommandsDark : ''}`}>
-                <div className={`${styles.commandsHeader} ${theme === 'dark' ? styles.commandsHeaderDark : ''}`}>
-                  <i className="fas fa-terminal"></i>
-                  {t('system_commands') || 'System Commands'}
-                </div>
-                <div className={styles.commandsGrid}>
-                  {systemCommands.map((cmd, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => sendQuery(cmd.query)}
-                      disabled={isLoading || isLoadingDomain || !selectedDomain}
-                      className={styles.commandButton}
-                      style={{ backgroundColor: cmd.color }}
-                      title={cmd.tooltip}
-                    >
-                      <i className={cmd.icon}></i>
-                      {cmd.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              <div className={styles.compactPanelsContainer}>
+  {/* SYSTEM COMMANDS - ултра компактен */}
+  <div className={`${styles.systemCommandsCompact} ${theme === 'dark' ? styles.systemCommandsDark : ''}`}>
+    <div className={`${styles.commandsHeaderCompact} ${theme === 'dark' ? styles.commandsHeaderDark : ''}`}>
+      <i className="fas fa-terminal"></i>
+      <span className={styles.headerLabel}>System</span>
+    </div>
+    <div className={styles.commandsRow}>
+      {systemCommands.map((cmd, idx) => (
+        <button
+          key={idx}
+          onClick={() => sendQuery(cmd.query)}
+          disabled={isLoading || isLoadingDomain || !selectedDomain}
+          className={styles.commandButtonTiny}
+          style={{ backgroundColor: cmd.color }}
+          title={cmd.tooltip}
+        >
+          <i className={cmd.icon}></i>
+        </button>
+      ))}
+    </div>
+  </div>
 
-              {/* FILE COMMANDS с инпут */}
-              <div className={`${styles.fileCommands} ${theme === 'dark' ? styles.fileCommandsDark : ''}`}>
-                <div className={`${styles.commandsHeader} ${theme === 'dark' ? styles.commandsHeaderDark : ''}`}>
-                  <i className="fas fa-file-code"></i>
-                  {t('file_management') || 'File Management'}
-                </div>
-                <div className={styles.fileCommandsContainer}>
-                  <div className={styles.fileInputGroup}>
-                    <input
-                      type="text"
-                      value={fileNameInput}
-                      onChange={e => setFileNameInput(e.target.value)}
-                      placeholder={t('enter_filename') || "Enter filename (e.g., animals.pl)"}
-                      className={`${styles.fileNameInput} ${theme === 'dark' ? styles.fileNameInputDark : ''}`}
-                      disabled={isLoading || isLoadingDomain || !selectedDomain}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && fileNameInput.trim()) {
-                          sendQuery(`consult_file('${fileNameInput.trim()}').`);
-                          setFileNameInput("");
-                        }
-                      }}
-                    />
-                    <div className={styles.fileCommandsButtons}>
-                      {fileCommands.map((cmd, idx) => (
-                        <button
-                          key={idx}
-                          onClick={cmd.action}
-                          disabled={isLoading || isLoadingDomain || !selectedDomain || !fileNameInput.trim()}
-                          className={styles.fileCommandButton}
-                          style={{ backgroundColor: cmd.color }}
-                          title={cmd.tooltip}
-                        >
-                          <i className={cmd.icon}></i>
-                          {cmd.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <div className={`${styles.fileCommandsHint} ${theme === 'dark' ? styles.fileCommandsHintDark : ''}`}>
-                    <i className="fas fa-info-circle"></i>
-                    {t('file_command_hint') || 'Enter filename above, then click a file command'}
-                  </div>
-                </div>
-              </div>
+  {/* FILE COMMANDS - ултра компактен */}
+  <div className={`${styles.fileCommandsCompact} ${theme === 'dark' ? styles.fileCommandsDark : ''}`}>
+    <div className={`${styles.commandsHeaderCompact} ${theme === 'dark' ? styles.commandsHeaderDark : ''}`}>
+      <i className="fas fa-file-code"></i>
+      <span className={styles.headerLabel}>Files</span>
+    </div>
+    <div className={styles.fileInputRow}>
+      <input
+        type="text"
+        value={fileNameInput}
+        onChange={e => setFileNameInput(e.target.value)}
+        placeholder="filename.pl"
+        className={`${styles.fileNameInputTiny} ${theme === 'dark' ? styles.fileNameInputDark : ''}`}
+        disabled={isLoading || isLoadingDomain || !selectedDomain}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && fileNameInput.trim()) {
+            sendQuery(`consult_file('${fileNameInput.trim()}').`);
+            setFileNameInput("");
+          }
+        }}
+      />
+      <div className={styles.fileButtonsRow}>
+        {fileCommands.map((cmd, idx) => (
+          <button
+            key={idx}
+            onClick={cmd.action}
+            disabled={isLoading || isLoadingDomain || !selectedDomain || !fileNameInput.trim()}
+            className={styles.fileCommandButtonTiny}
+            style={{ backgroundColor: cmd.color }}
+            title={cmd.tooltip}
+          >
+            <i className={cmd.icon}></i>
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
 
               {/* CHAT WINDOW */}
               <div className={`${styles.chatWindow} ${theme === 'dark' ? styles.chatWindowDark : ''} ${isChatExpanded ? styles.chatExpanded : ''}`}>
