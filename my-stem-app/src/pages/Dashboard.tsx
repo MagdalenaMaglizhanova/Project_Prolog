@@ -15,7 +15,7 @@ import {
 import { supabase } from "../services/supabase";
 import styles from "./Dashboard.module.css";
 
-const folders = ["animals", "geography", "history", "mineralwater"];
+const folders = ["animals", "geography", "history", "mineralwater", "balkan"];
 
 const courses = [
   { id: 1, title: "UI Design", description: "Learn design basics", progress: 70, color: "#FF6B8B", icon: "fas fa-palette" },
@@ -156,60 +156,129 @@ export default function Dashboard() {
   };
 
   const handleFileUpload = async () => {
-    if (!file || !user) {
-      console.error("❌ No file or user:", { file, user });
-      setUploadStatus("❌ " + (t('no_file_user') || "No file selected or user not logged in"));
-      return;
-    }
+  if (!file || !user) {
+    console.error("❌ No file or user:", { file, user });
+    setUploadStatus("❌ " + (t('no_file_user') || "No file selected or user not logged in"));
+    return;
+  }
 
-    if (!file.name.toLowerCase().endsWith('.pl')) {
-      console.error("❌ Not a .pl file:", file.name);
-      setUploadStatus("❌ " + (t('only_pl_files') || "Only .pl files allowed"));
-      return;
-    }
+  if (!file.name.toLowerCase().endsWith('.pl')) {
+    console.error("❌ Not a .pl file:", file.name);
+    setUploadStatus("❌ " + (t('only_pl_files') || "Only .pl files allowed"));
+    return;
+  }
 
-    const timestamp = Date.now();
-    const safeFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-    const path = `${folder}/${user.uid}_${timestamp}_${safeFileName}`;
+  // Извличане на username от имейла
+  const username = user.email ? user.email.split('@')[0] : 'anonymous';
+  
+  // Чисто име на файл (без път и без разширение)
+  const originalName = file.name;
+  const fileNameWithoutExt = originalName.replace(/\.[^/.]+$/, "");
+  
+  // Подобряване на името на файла
+  const safeFileName = fileNameWithoutExt
+    .replace(/[^a-zA-Z0-9а-яА-Я\s\-_]/g, '') // Запазване на букви, цифри, тирета и подчертавки
+    .replace(/\s+/g, '-') // Заместване на интервали с тире
+    .toLowerCase()
+    .substring(0, 50); // Ограничаване на дължината
+    
+  // Кратък timestamp (последни 4 цифри)
+  const shortTimestamp = Date.now().toString().slice(-4);
+  
+  // Генериране на уникално ID
+  const randomId = Math.random().toString(36).substring(2, 6); // 4-символен произволен низ
+  
+  // Крайно име на файла
+  let finalFileName = `${username}_${safeFileName}_${shortTimestamp}${randomId}.pl`;
+  
+  // Път за Supabase
+  let path = `${folder}/${finalFileName}`;
 
-    try {
-      const { data: uploadData, error } = await supabase.storage
-        .from("prolog-files")
-        .upload(path, file, { 
-          upsert: true,
-          cacheControl: '3600',
-          contentType: file.type || 'text/plain'
-        });
+  try {
+    console.log("📤 Uploading file:", {
+      originalName,
+      finalFileName,
+      username,
+      folder,
+      path
+    });
 
-      if (error) {
-        console.error("❌ Supabase upload error:", error);
+    const { data: uploadData, error } = await supabase.storage
+      .from("prolog-files")
+      .upload(path, file, { 
+        upsert: false, // Не позволява презаписване
+        cacheControl: '3600',
+        contentType: file.type || 'text/plain'
+      });
+
+    if (error) {
+      console.error("❌ Supabase upload error:", error);
+      
+      // Ако файл със същото име вече съществува, опитай с различно ID
+      if (error.message.includes('already exists')) {
+        const newRandomId = Math.random().toString(36).substring(2, 8);
+        const newFinalFileName = `${username}_${safeFileName}_${shortTimestamp}${newRandomId}.pl`;
+        const newPath = `${folder}/${newFinalFileName}`;
+        
+        const { data: retryData, error: retryError } = await supabase.storage
+          .from("prolog-files")
+          .upload(newPath, file, { 
+            upsert: false,
+            cacheControl: '3600'
+          });
+          
+        if (retryError) {
+          setUploadStatus("❌ " + (t('upload_failed') || "Upload failed:") + " " + retryError.message);
+          return;
+        }
+        
+        // Обнови path с новото име
+        path = newPath;
+        finalFileName = newFinalFileName;
+      } else {
         setUploadStatus("❌ " + (t('upload_failed') || "Upload failed:") + " " + error.message);
         return;
       }
-
-      await addDoc(collection(db, "prologCodes"), {
-        userId: user.uid,
-        title: `File: ${file.name}`,
-        code: `Uploaded file to ${path}`,
-        fileName: file.name,
-        filePath: path,
-        folder: folder,
-        fileSize: file.size,
-        status: "success",
-        createdAt: serverTimestamp()
-      });
-console.log(uploadData);
-      setUploadStatus("✅ " + (t('file_upload_success') || "File uploaded successfully!"));
-      setFile(null);
-      
-      const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-      if (fileInput) fileInput.value = '';
-      
-    } catch (err) {
-      console.error("❌ Catch block error:", err);
-      setUploadStatus("❌ " + (t('unexpected_error') || "An unexpected error occurred"));
     }
-  };
+
+    // Записване в Firestore с пълна информация
+    await addDoc(collection(db, "prologCodes"), {
+      userId: user.uid,
+      username: username,
+      title: originalName, // Оригинално име за показване
+      storedFileName: finalFileName, // Име в storage
+      originalFileName: originalName, // Оригинално име
+      displayName: `${username}/${originalName}`, // Потребителско име + оригинално име
+      code: `File: ${originalName}`,
+      fileName: finalFileName,
+      filePath: path,
+      folder: folder,
+      fileSize: file.size,
+      uploadFormat: "username_original_id.pl",
+      timestamp: shortTimestamp,
+      randomId: randomId,
+      status: "success",
+      createdAt: serverTimestamp()
+    });
+
+    console.log("✅ Upload successful:", { 
+      originalName, 
+      storedName: finalFileName,
+      path 
+    });
+
+    setUploadStatus("✅ " + (t('file_upload_success') || `File "${originalName}" uploaded as "${finalFileName}"`));
+    setFile(null);
+    
+    // Изчистване на file input
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) fileInput.value = '';
+    
+  } catch (err) {
+    console.error("❌ Catch block error:", err);
+    setUploadStatus("❌ " + (t('unexpected_error') || "An unexpected error occurred"));
+  }
+};
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
