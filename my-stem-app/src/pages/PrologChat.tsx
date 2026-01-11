@@ -28,7 +28,7 @@ export default function PrologChat() {
   const [allCodes, setAllCodes] = useState<PrologCode[]>([]);
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
   const [isLoadingDomain, setIsLoadingDomain] = useState(false);
-  const [activeTab, setActiveTab] = useState<"chat" | "code">("chat");
+  const [activeTab, _setActiveTab] = useState<"chat" | "code">("chat");
   const [fileNameInput, setFileNameInput] = useState("");
   const [isChatExpanded, setIsChatExpanded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -640,121 +640,122 @@ export default function PrologChat() {
 </div>
 
               {/* CHAT WINDOW */}
-              <div className={`${styles.chatWindow} ${theme === 'dark' ? styles.chatWindowDark : ''} ${isChatExpanded ? styles.chatExpanded : ''}`}>
-                <div className={styles.chatHeader}>
-                  <div className={styles.chatHeaderLeft}>
-                    <h3>{t('prolog_chat') || 'Prolog Chat'}</h3>
-                    <span className={styles.messageCount}>
-                      {messages.filter(m => !m.user).length} {t('responses') || 'responses'}
-                    </span>
-                  </div>
-                  <div className={styles.chatHeaderRight}>
-                    <button 
-                      onClick={toggleChatExpansion}
-                      className={`${styles.expandButton} ${isChatExpanded ? styles.expanded : ''}`}
-                      title={isChatExpanded ? 
-                        (t('collapse_chat') || 'Collapse chat') : 
-                        (t('expand_chat') || 'Expand chat')}
-                    >
-                      <i className={`fas fa-${isChatExpanded ? 'compress' : 'expand'}`}></i>
-                    </button>
-                    <button 
-                      onClick={clearChat}
-                      className={styles.clearChatButtonSmall}
-                      title={t('clear_chat') || 'Clear chat'}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
-                  </div>
-                </div>
-                
-                <div 
-                  ref={messagesContainerRef}
-                  className={`${styles.messagesContainer} ${theme === 'dark' ? styles.messagesContainerDark : ''} ${isChatExpanded ? styles.messagesContainerExpanded : ''}`}
-                >
-                  {(messages.length === 0 ? [{ 
-                    user: false, 
-                    text: getWelcomeMessage(), 
-                    id: "welcome", 
-                    timestamp: new Date() 
-                  }] : messages).map(msg => (
-                    <div key={msg.id} className={`${styles.messageWrapper} ${msg.user ? styles.userMessage : styles.botMessage}`}>
-                      <div className={styles.messageContent}>
-                        {!msg.user && (
-                          <div className={styles.messageAvatar}>
-                            <div className={styles.userAvatar}>
-                              <img src="/images/logo_shevici.jpg" alt="AI Assistant" />
-                            </div>
-                          </div>
-                        )}
-                        <div className={`${styles.messageBubble} ${msg.id.startsWith('thinking-') || msg.id.startsWith('domain-loading-') ? styles.thinkingBubble : ''} ${theme === 'dark' ? styles.messageBubbleDark : ''}`}>
-                          <div className={`${styles.messageText} ${msg.id.startsWith('thinking-') || msg.id.startsWith('domain-loading-') ? styles.thinkingText : ''} ${theme === 'dark' ? styles.messageTextDark : ''}`}>
-                            {msg.text.split("\n").map((line, i) => (
-                              <div key={i} className={styles.messageLine}>
-                                {line}
-                              </div>
-                            ))}
-                          </div>
-                          <div className={`${styles.messageTime} ${theme === 'dark' ? styles.messageTimeDark : ''}`}>
-                            {msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                          </div>
-                        </div>
-                        {msg.user && (
-                          <div className={styles.messageAvatar}>
-                            <div className={styles.userAvatar}>
-                              <i className="fas fa-user"></i>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                  <div ref={messagesEndRef} className={styles.scrollAnchor} />
-                </div>
-
-                <div className={styles.inputContainer}>
-                  <form onSubmit={(e) => e.preventDefault()} className={styles.inputForm}>
-                    <div className={styles.inputWrapper}>
-                      <input
-                        type="text"
-                        value={query}
-                        onChange={e => setQuery(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        placeholder={
-                          isLoadingDomain ? (t('loading_domain') || "Loading domain") + "..." :
-                          !selectedDomain ? (t('select_domain_first') || "Select a domain first") + "..." :
-                          `${t('enter_prolog_query') || "Enter Prolog query"} ${selectedDomain} ${t('domain') || "domain"}...`
-                        }
-                        className={`${styles.chatInput} ${theme === 'dark' ? styles.chatInputDark : ''}`}
-                        disabled={isLoading || isLoadingDomain || !selectedDomain}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => sendQuery()}
-                        disabled={isLoading || isLoadingDomain || !query.trim() || !selectedDomain}
-                        className={`${styles.sendButton} ${theme === 'dark' ? styles.sendButtonDark : ''}`}
-                      >
-                        {isLoading ? (
-                          <i className="fas fa-spinner fa-spin"></i>
-                        ) : (
-                          <>
-                            <i className="fas fa-paper-plane"></i>
-                            <span className={styles.sendButtonText}>
-                              {t('send') || 'Send'}
-                            </span>
-                          </>
-                        )}
-                      </button>
-                    </div>
-                    <div className={`${styles.inputHint} ${theme === 'dark' ? styles.inputHintDark : ''}`}>
-                      <i className="fas fa-info-circle"></i>
-                      {t('press_enter_to_send') || 'Press Enter to send'} • 
-                      {selectedDomain && ` • ${t('connected_to') || 'Connected to'}: ${selectedDomain} ${t('domain') || 'domain'}`}
-                    </div>
-                  </form>
-                </div>
+              {/* CHAT WINDOW */}
+<div className={`${styles.chatWindow} ${theme === 'dark' ? styles.chatWindowDark : ''} ${isChatExpanded ? styles.chatExpanded : ''}`}>
+  <div className={styles.chatHeader}>
+    <div className={styles.chatHeaderLeft}>
+      <h3>{t('prolog_chat') || 'Prolog Chat'}</h3>
+      <span className={styles.messageCount}>
+        {messages.filter(m => !m.user).length} {t('responses') || 'responses'}
+      </span>
+    </div>
+    <div className={styles.chatHeaderRight}>
+      <button 
+        onClick={toggleChatExpansion}
+        className={`${styles.expandButton} ${isChatExpanded ? styles.expanded : ''}`}
+        title={isChatExpanded ? 
+          (t('collapse_chat') || 'Collapse chat') : 
+          (t('expand_chat') || 'Expand chat')}
+      >
+        <i className={`fas fa-${isChatExpanded ? 'compress' : 'expand'}`}></i>
+      </button>
+      <button 
+        onClick={clearChat}
+        className={styles.clearChatButtonSmall}
+        title={t('clear_chat') || 'Clear chat'}
+      >
+        <i className="fas fa-trash"></i>
+      </button>
+    </div>
+  </div>
+  
+  <div 
+    ref={messagesContainerRef}
+    className={`${styles.messagesContainer} ${theme === 'dark' ? styles.messagesContainerDark : ''} ${isChatExpanded ? styles.messagesContainerExpanded : ''}`}
+  >
+    {(messages.length === 0 ? [{ 
+      user: false, 
+      text: getWelcomeMessage(), 
+      id: "welcome", 
+      timestamp: new Date() 
+    }] : messages).map(msg => (
+      <div key={msg.id} className={`${styles.messageWrapper} ${msg.user ? styles.userMessage : styles.botMessage}`}>
+        <div className={styles.messageContent}>
+          {!msg.user && (
+            <div className={styles.messageAvatar}>
+              <div className={styles.userAvatar}>
+                <img src="/images/logo_shevici.jpg" alt="AI Assistant" />
               </div>
             </div>
+          )}
+          <div className={`${styles.messageBubble} ${msg.id.startsWith('thinking-') || msg.id.startsWith('domain-loading-') ? styles.thinkingBubble : ''} ${theme === 'dark' ? styles.messageBubbleDark : ''}`}>
+            <div className={`${styles.messageText} ${msg.id.startsWith('thinking-') || msg.id.startsWith('domain-loading-') ? styles.thinkingText : ''} ${theme === 'dark' ? styles.messageTextDark : ''}`}>
+              {msg.text.split("\n").map((line, i) => (
+                <div key={i} className={styles.messageLine}>
+                  {line}
+                </div>
+              ))}
+            </div>
+            <div className={`${styles.messageTime} ${theme === 'dark' ? styles.messageTimeDark : ''}`}>
+              {msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            </div>
+          </div>
+          {msg.user && (
+            <div className={styles.messageAvatar}>
+              <div className={styles.userAvatar}>
+                <i className="fas fa-user"></i>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    ))}
+    <div ref={messagesEndRef} className={styles.scrollAnchor} />
+  </div>
+
+  <div className={styles.inputContainer}>
+    <form onSubmit={(e) => e.preventDefault()} className={styles.inputForm}>
+      <div className={styles.inputWrapper}>
+        <input
+          type="text"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder={
+            isLoadingDomain ? (t('loading_domain') || "Loading domain") + "..." :
+            !selectedDomain ? (t('select_domain_first') || "Select a domain first") + "..." :
+            `${t('enter_prolog_query') || "Enter Prolog query"} ${selectedDomain} ${t('domain') || "domain"}...`
+          }
+          className={`${styles.chatInput} ${theme === 'dark' ? styles.chatInputDark : ''}`}
+          disabled={isLoading || isLoadingDomain || !selectedDomain}
+        />
+        <button
+          type="button"
+          onClick={() => sendQuery()}
+          disabled={isLoading || isLoadingDomain || !query.trim() || !selectedDomain}
+          className={`${styles.sendButton} ${theme === 'dark' ? styles.sendButtonDark : ''}`}
+        >
+          {isLoading ? (
+            <i className="fas fa-spinner fa-spin"></i>
+          ) : (
+            <>
+              <i className="fas fa-paper-plane"></i>
+              <span className={styles.sendButtonText}>
+                {t('send') || 'Send'}
+              </span>
+            </>
+          )}
+        </button>
+      </div>
+      <div className={`${styles.inputHint} ${theme === 'dark' ? styles.inputHintDark : ''}`}>
+        <i className="fas fa-info-circle"></i>
+        {t('press_enter_to_send') || 'Press Enter to send'} • 
+        {selectedDomain && ` • ${t('connected_to') || 'Connected to'}: ${selectedDomain} ${t('domain') || 'domain'}`}
+      </div>
+    </form>
+  </div>
+</div>
+</div>
           )}
 
           {/* CODE TAB */}
