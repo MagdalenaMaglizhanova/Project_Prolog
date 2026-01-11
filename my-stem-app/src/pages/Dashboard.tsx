@@ -210,7 +210,7 @@ export default function Dashboard() {
         cacheControl: '3600',
         contentType: file.type || 'text/plain'
       });
-
+console.log(uploadData);
     if (error) {
       console.error("❌ Supabase upload error:", error);
       
@@ -226,7 +226,7 @@ export default function Dashboard() {
             upsert: false,
             cacheControl: '3600'
           });
-          
+          console.log(retryData);
         if (retryError) {
           setUploadStatus("❌ " + (t('upload_failed') || "Upload failed:") + " " + retryError.message);
           return;
