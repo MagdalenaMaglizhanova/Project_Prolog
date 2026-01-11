@@ -1,22 +1,43 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from "../context/AuthContext";
-import './Header.css';
-
-const logo = '/images/logo.png'; 
+import { useTheme } from "../context/ThemeContext";
+import { useLanguage } from "../context/LanguageContext";
+import styles from './Header.module.css';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
+  
   const location = useLocation();
   const navigate = useNavigate();
-  
   const { user, logout } = useAuth();
+  
+  // Използване на контексти
+  const { theme, toggleTheme } = useTheme();
+  const { language, setLanguage, languageOptions, currentLanguage, t } = useLanguage();
+
+  // Ref за управление на кликове извън менюто
+  const languageMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Затваряне на менюто за език при клик извън него
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (languageMenuRef.current && 
+          !languageMenuRef.current.contains(event.target as Node)) {
+        setIsLanguageMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const isActiveRoute = (path: string) => location.pathname === path;
@@ -36,107 +57,155 @@ export default function Header() {
     console.log('Please login to access this page');
   };
 
-  return (
-    <header className={`header ${scrolled ? 'header-scrolled' : ''}`}>
-      <div className="header-container">
+  const handleLanguageChange = (langCode: 'en' | 'bg' | 'es') => {
+    setLanguage(langCode);
+    setIsLanguageMenuOpen(false);
+    setIsMenuOpen(false);
+  };
 
-        {/* Logo */}
-        <Link to="/" className="logo-section">
-          <div className="logo-wrapper">
-            <img
-              src={logo}
-              alt="IDEAS Logo"
-              className="logo-image"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-                const fallback = target.nextElementSibling as HTMLElement;
-                if (fallback) fallback.style.display = 'flex';
-              }}
-            />
-            <div className="logo-fallback">
+  const getFlagClass = (code: 'en' | 'bg' | 'es') => {
+    switch (code) {
+      case 'en': return styles.flagEnglish;
+      case 'bg': return styles.flagBulgarian;
+      case 'es': return styles.flagSpanish;
+      default: return '';
+    }
+  };
+
+  return (
+    <header className={`${styles.header} ${scrolled ? styles.headerScrolled : ''}`}>
+      <div className={styles.headerContainer}>
+        {/* Logo with Lightbulb - ВЛЯВО */}
+        <Link to="/" className={styles.logoSection}>
+          <div className={styles.logoWrapper}>
+            <div className={styles.lightbulbIcon}>
               <i className="fas fa-lightbulb"></i>
             </div>
           </div>
-          <div className="logo-text-container">
-            <span className="logo-text">IDEAS</span>
-            <span className="logo-subtitle">Innovation Platform</span>
+          <div className={styles.logoTextContainer}>
+            <span className={styles.logoText}>IDEAS</span>
+            <span className={styles.logoSubtitle}>{t('innovation_platform')}</span>
           </div>
         </Link>
 
-        {/* Desktop Nav */}
-        <nav className="desktop-nav">
+        {/* Desktop Nav - СЛЕД ЛОГОТО */}
+        <nav className={styles.desktopNav}>
           <Link
             to="/"
-            className={`nav-link ${isActiveRoute("/") ? "nav-link-active" : ""}`}
+            className={`${styles.navLink} ${isActiveRoute("/") ? styles.navLinkActive : ""}`}
           >
-            <i className="fas fa-home"></i> Home
+            <i className="fas fa-home"></i> 
+            <span className={styles.navLinkText}>{t('home')}</span>
           </Link>
 
           <Link
             to={user ? "/topics" : "#"}
-            className={`nav-link ${!user ? "nav-link-disabled" : ""} ${isActiveRoute("/topics") ? "nav-link-active" : ""}`}
+            className={`${styles.navLink} ${!user ? styles.navLinkDisabled : ""} ${isActiveRoute("/topics") ? styles.navLinkActive : ""}`}
             onClick={!user ? handleDisabledLink : undefined}
           >
-            <i className="fas fa-comments"></i> Topics
-          </Link>
-
-          <Link
-            to={user ? "/submissions" : "#"}
-            className={`nav-link ${!user ? "nav-link-disabled" : ""} ${isActiveRoute("/submissions") ? "nav-link-active" : ""}`}
-            onClick={!user ? handleDisabledLink : undefined}
-          >
-            <i className="fas fa-paper-plane"></i> Submissions
+            <i className="fas fa-book-open"></i> 
+            <span className={styles.navLinkText}>{t('topics')}</span>
           </Link>
 
           <Link
             to={user ? "/dashboard" : "#"}
-            className={`nav-link ${!user ? "nav-link-disabled" : ""} ${isActiveRoute("/dashboard") ? "nav-link-active" : ""}`}
+            className={`${styles.navLink} ${!user ? styles.navLinkDisabled : ""} ${isActiveRoute("/dashboard") ? styles.navLinkActive : ""}`}
             onClick={!user ? handleDisabledLink : undefined}
           >
-            <i className="fas fa-chart-line"></i> Dashboard
+            <i className="fas fa-chart-line"></i> 
+            <span className={styles.navLinkText}>{t('dashboard')}</span>
           </Link>
 
           {user && (
             <Link
               to="/chat"
-              className={`nav-link ${isActiveRoute("/chat") ? "nav-link-active" : ""}`}
+              className={`${styles.navLink} ${isActiveRoute("/chat") ? styles.navLinkActive : ""}`}
             >
-              <i className="fas fa-robot"></i> Prolog Chat
+              <i className="fas fa-robot"></i> 
+              <span className={styles.navLinkText}>{t('prolog_chat')}</span>
             </Link>
           )}
         </nav>
 
-        {/* Search + Auth */}
-        <div className="header-right-section">
-          <div className="search-section">
-            <i className="fas fa-search search-icon"></i>
-            <input type="text" placeholder="Search ideas..." className="search-input" />
+        {/* Controls + Auth */}
+        <div className={styles.headerRightSection}>
+          {/* Theme and Language Controls */}
+          <div className={styles.controlsSection}>
+            <button
+              className={styles.themeButton}
+              onClick={toggleTheme}
+              title={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
+            >
+              <i className={theme === 'light' ? 'fas fa-moon' : 'fas fa-sun'}></i>
+            </button>
+
+            <div className={styles.languageSelector} ref={languageMenuRef}>
+              <button
+                className={styles.languageButton}
+                onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
+              >
+                <span className={`${styles.flag} ${getFlagClass(language)}`}>
+                  {currentLanguage?.flag}
+                </span>
+                <span className={styles.languageLabel}>{currentLanguage?.label}</span>
+                <i className={`fas fa-chevron-${isLanguageMenuOpen ? 'up' : 'down'}`}></i>
+              </button>
+
+              <div className={`${styles.languageMenu} ${isLanguageMenuOpen ? styles.languageMenuOpen : ''}`}>
+                {languageOptions.map((option) => (
+                  <button
+                    key={option.code}
+                    className={`${styles.languageOption} ${language === option.code ? styles.languageOptionActive : ''}`}
+                    onClick={() => handleLanguageChange(option.code)}
+                  >
+                    <span className={`${styles.flag} ${getFlagClass(option.code)}`}>
+                      {option.flag}
+                    </span>
+                    <span>{option.name}</span>
+                    {language === option.code && (
+                      <i className="fas fa-check ml-auto" style={{fontSize: '0.8rem'}}></i>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
-          <div className="auth-section">
+          {/* Auth Section */}
+          <div className={styles.authSection}>
             {!user ? (
               <>
-                <Link to="/login" className="auth-link login-link">
-                  <i className="fas fa-sign-in-alt"></i> Sign in
+                <Link 
+                  to="/login" 
+                  className={`${styles.authLink} ${styles.loginLink}`}
+                >
+                  <i className="fas fa-sign-in-alt"></i> 
+                  <span className={styles.authText}>{t('sign_in')}</span>
                 </Link>
 
-                <Link to="/register" className="auth-link register-link">
-                  <i className="fas fa-rocket"></i> Get Started
+                <Link 
+                  to="/register" 
+                  className={`${styles.authLink} ${styles.registerLink}`}
+                >
+                  <i className="fas fa-rocket"></i> 
+                  <span className={styles.authText}>{t('get_started')}</span>
                 </Link>
               </>
             ) : (
-              <div className="user-menu">
-                <div className="user-info">
-                  <span className="user-email">{user.email}</span>
+              <div className={styles.userMenu}>
+                <div className={styles.userInfo}>
+                  <i className={`fas fa-user ${styles.userAvatar}`}></i>
+                  <span className={styles.userEmail}>
+                    {user.email}
+                  </span>
                 </div>
                 <button 
-                  className="logout-button"
+                  className={styles.logoutButton}
                   onClick={handleLogout}
                   title="Logout"
                 >
                   <i className="fas fa-sign-out-alt"></i>
-                  <span className="logout-text">Logout</span>
+                  <span className={styles.logoutText}>{t('logout')}</span>
                 </button>
               </div>
             )}
@@ -145,36 +214,70 @@ export default function Header() {
 
         {/* Mobile Menu Button */}
         <button
-          className="mobile-menu-button"
+          className={styles.mobileMenuButton}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
-          <span className={`menu-line ${isMenuOpen ? 'menu-line-1-open' : ''}`}></span>
-          <span className={`menu-line ${isMenuOpen ? 'menu-line-2-open' : ''}`}></span>
-          <span className={`menu-line ${isMenuOpen ? 'menu-line-3-open' : ''}`}></span>
+          <span className={`${styles.menuLine} ${isMenuOpen ? styles.menuLine1Open : ''}`}></span>
+          <span className={`${styles.menuLine} ${isMenuOpen ? styles.menuLine2Open : ''}`}></span>
+          <span className={`${styles.menuLine} ${isMenuOpen ? styles.menuLine3Open : ''}`}></span>
         </button>
       </div>
 
       {/* Mobile Menu */}
-      <div className={`mobile-menu ${isMenuOpen ? 'mobile-menu-open' : ''}`}>
+      <div className={`${styles.mobileMenu} ${isMenuOpen ? styles.mobileMenuOpen : ''}`}>
+        {/* Mobile Controls */}
+        <div className={styles.mobileControlsSection}>
+          <button
+            className={styles.mobileThemeButton}
+            onClick={toggleTheme}
+          >
+            <i className={theme === 'light' ? 'fas fa-moon' : 'fas fa-sun'}></i>
+            <span>{theme === 'light' ? 'Dark' : 'Light'}</span>
+          </button>
 
-        <div className="mobile-search-section">
-          <i className="fas fa-search"></i>
-          <input type="text" placeholder="Search ideas..." className="mobile-search-input" />
+          <div className={styles.languageSelector}>
+            <button
+              className={styles.mobileLanguageButton}
+              onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
+            >
+              <span className={`${styles.flag} ${getFlagClass(language)}`}>
+                {currentLanguage?.flag}
+              </span>
+              <span>{currentLanguage?.label}</span>
+              <i className={`fas fa-chevron-${isLanguageMenuOpen ? 'up' : 'down'}`} style={{marginLeft: 'auto'}}></i>
+            </button>
+
+            <div className={`${styles.languageMenu} ${isLanguageMenuOpen ? styles.languageMenuOpen : ''}`}>
+              {languageOptions.map((option) => (
+                <button
+                  key={option.code}
+                  className={`${styles.languageOption} ${language === option.code ? styles.languageOptionActive : ''}`}
+                  onClick={() => handleLanguageChange(option.code)}
+                >
+                  <span className={`${styles.flag} ${getFlagClass(option.code)}`}>
+                    {option.flag}
+                  </span>
+                  <span>{option.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <nav className="mobile-nav">
+        <nav className={styles.mobileNav}>
           <Link
             to="/"
-            className={`mobile-nav-link ${isActiveRoute("/") ? "mobile-nav-link-active" : ""}`}
+            className={`${styles.mobileNavLink} ${isActiveRoute("/") ? styles.mobileNavLinkActive : ""}`}
             onClick={() => setIsMenuOpen(false)}
           >
-            <i className="fas fa-home"></i> Home
+            <i className="fas fa-home"></i> 
+            <span>{t('home')}</span>
           </Link>
 
           <Link
             to={user ? "/topics" : "#"}
-            className={`mobile-nav-link ${!user ? "nav-link-disabled" : ""} ${isActiveRoute("/topics") ? "mobile-nav-link-active" : ""}`}
+            className={`${styles.mobileNavLink} ${!user ? styles.navLinkDisabled : ""} ${isActiveRoute("/topics") ? styles.mobileNavLinkActive : ""}`}
             onClick={(e) => {
               if (!user) {
                 e.preventDefault();
@@ -184,27 +287,13 @@ export default function Header() {
               }
             }}
           >
-            <i className="fas fa-comments"></i> Topics
-          </Link>
-
-          <Link
-            to={user ? "/submissions" : "#"}
-            className={`mobile-nav-link ${!user ? "nav-link-disabled" : ""} ${isActiveRoute("/submissions") ? "mobile-nav-link-active" : ""}`}
-            onClick={(e) => {
-              if (!user) {
-                e.preventDefault();
-                handleDisabledLink(e);
-              } else {
-                setIsMenuOpen(false);
-              }
-            }}
-          >
-            <i className="fas fa-paper-plane"></i> Submissions
+            <i className="fas fa-book-open"></i> 
+            <span>{t('topics')}</span>
           </Link>
 
           <Link
             to={user ? "/dashboard" : "#"}
-            className={`mobile-nav-link ${!user ? "nav-link-disabled" : ""} ${isActiveRoute("/dashboard") ? "mobile-nav-link-active" : ""}`}
+            className={`${styles.mobileNavLink} ${!user ? styles.navLinkDisabled : ""} ${isActiveRoute("/dashboard") ? styles.mobileNavLinkActive : ""}`}
             onClick={(e) => {
               if (!user) {
                 e.preventDefault();
@@ -214,55 +303,61 @@ export default function Header() {
               }
             }}
           >
-            <i className="fas fa-chart-line"></i> Dashboard
+            <i className="fas fa-chart-line"></i> 
+            <span>{t('dashboard')}</span>
           </Link>
 
           {user && (
             <Link
               to="/chat"
-              className={`mobile-nav-link ${isActiveRoute("/chat") ? "mobile-nav-link-active" : ""}`}
+              className={`${styles.mobileNavLink} ${isActiveRoute("/chat") ? styles.mobileNavLinkActive : ""}`}
               onClick={() => setIsMenuOpen(false)}
             >
-              <i className="fas fa-robot"></i> Prolog Chat
+              <i className="fas fa-robot"></i> 
+              <span>{t('prolog_chat')}</span>
             </Link>
           )}
         </nav>
 
-        <div className="mobile-auth-section">
+        <div className={styles.mobileAuthSection}>
           {!user ? (
             <>
               <Link 
                 to="/login" 
-                className="mobile-auth-link mobile-login-link" 
+                className={`${styles.authLink} ${styles.loginLink}`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                <i className="fas fa-sign-in-alt"></i> Sign in
+                <i className="fas fa-sign-in-alt"></i> 
+                <span>{t('sign_in')}</span>
               </Link>
 
               <Link 
                 to="/register" 
-                className="mobile-auth-link mobile-register-link" 
+                className={`${styles.authLink} ${styles.registerLink}`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                <i className="fas fa-rocket"></i> Get Started
+                <i className="fas fa-rocket"></i> 
+                <span>{t('get_started')}</span>
               </Link>
             </>
           ) : (
             <>
-              <div className="mobile-user-info">
-                <span className="mobile-user-email">{user.email}</span>
+              <div className={styles.mobileUserInfo}>
+                <i className={`fas fa-user ${styles.userAvatar}`}></i>
+                <span className={styles.userEmail}>
+                  {user.email}
+                </span>
               </div>
               <button 
-                className="mobile-logout-button"
+                className={styles.mobileLogoutButton}
                 onClick={handleLogout}
               >
                 <i className="fas fa-sign-out-alt"></i>
-                Logout
+                <span>{t('logout')}</span>
               </button>
             </>
           )}
         </div>
-
       </div>
     </header>
   );

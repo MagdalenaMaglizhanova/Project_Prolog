@@ -1,12 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 import './Footer.css';
 
-const logo = '/images/logo.png';
-const facebookIcon = '/images/facebook.png';
-const twitterIcon = '/images/twitter.png';
-const instagramIcon = '/images/instagram.png';
-
 export default function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="footer">
       <div className="footer-container">
@@ -15,61 +13,46 @@ export default function Footer() {
           <div className="footer-company">
             <div className="footer-logo">
               <div className="logo-wrapper">
-                <img
-                  src={logo}
-                  alt="IDEAS Logo"
-                  className="logo-image"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                    const fallback = target.nextElementSibling as HTMLElement;
-                    if (fallback) fallback.style.display = 'flex';
-                  }}
-                />
-                <div className="logo-fallback">
+                <div className="lightbulb-icon">
                   <i className="fas fa-lightbulb"></i>
                 </div>
               </div>
               <div className="logo-text-container">
                 <span className="logo-text">IDEAS</span>
-                <span className="logo-subtitle">Innovation Platform</span>
+                <span className="logo-subtitle">
+                  {t('innovation_platform')}
+                </span>
               </div>
             </div>
             <p className="footer-description">
-              Empowering the next generation of innovators through logical programming 
-              and AI education. Transforming STEM learning worldwide.
+              {t('footer_description') || 'Empowering the next generation of innovators through logical programming and AI education. Transforming STEM learning worldwide.'}
             </p>
             <div className="social-links">
               {[
                 { 
-                  name: 'Facebook', 
-                  icon: facebookIcon, 
-                  url: 'https://facebook.com',
-                  fallback: 'fab fa-facebook-f'
-                },
-                { 
-                  name: 'Twitter', 
-                  icon: twitterIcon, 
-                  url: 'https://twitter.com',
-                  fallback: 'fab fa-twitter'
-                },
-                { 
-                  name: 'Instagram', 
-                  icon: instagramIcon, 
-                  url: 'https://instagram.com',
-                  fallback: 'fab fa-instagram'
+                  name: 'GitHub', 
+                  url: 'https://github.com',
+                  icon: 'fab fa-github'
                 },
                 { 
                   name: 'LinkedIn', 
-                  icon: null, 
                   url: 'https://linkedin.com',
-                  fallback: 'fab fa-linkedin-in'
+                  icon: 'fab fa-linkedin-in'
                 },
                 { 
-                  name: 'GitHub', 
-                  icon: null, 
-                  url: 'https://github.com',
-                  fallback: 'fab fa-github'
+                  name: 'Twitter', 
+                  url: 'https://twitter.com',
+                  icon: 'fab fa-twitter'
+                },
+                { 
+                  name: 'Facebook', 
+                  url: 'https://facebook.com',
+                  icon: 'fab fa-facebook-f'
+                },
+                { 
+                  name: 'Instagram', 
+                  url: 'https://instagram.com',
+                  icon: 'fab fa-instagram'
                 }
               ].map((social) => (
                 <a 
@@ -80,20 +63,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {social.icon ? (
-                    <img 
-                      src={social.icon} 
-                      alt={`${social.name} icon`}
-                      className="social-icon-img"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                        const fallback = target.nextElementSibling as HTMLElement;
-                        if (fallback) fallback.style.display = 'flex';
-                      }}
-                    />
-                  ) : null}
-                  <i className={social.fallback} style={{ display: social.icon ? 'none' : 'flex' }}></i>
+                  <i className={social.icon}></i>
                 </a>
               ))}
             </div>
@@ -101,19 +71,21 @@ export default function Footer() {
           
           {/* Platform Links */}
           <div className="footer-links">
-            <h4 className="footer-heading">Platform</h4>
+            <h4 className="footer-heading">
+              {t('footer_platform') || 'Platform'}
+            </h4>
             <ul className="footer-list">
               {[
-                { name: 'Home', href: '/', icon: 'fas fa-home' },
-                { name: 'Topics', href: '/topics', icon: 'fas fa-comments' },
-                { name: 'Submissions', href: '/submissions', icon: 'fas fa-paper-plane' },
-                { name: 'Dashboard', href: '/dashboard', icon: 'fas fa-chart-line' },
-                { name: 'Documentation', href: '/docs', icon: 'fas fa-book' }
+                { nameKey: 'home', href: '/', icon: 'fas fa-home' },
+                { nameKey: 'topics', href: '/topics', icon: 'fas fa-comments' },
+                { nameKey: 'submissions', href: '/submissions', icon: 'fas fa-paper-plane' },
+                { nameKey: 'dashboard', href: '/dashboard', icon: 'fas fa-chart-line' },
+                { nameKey: 'documentation', href: '/docs', icon: 'fas fa-book' }
               ].map((link) => (
-                <li key={link.name}>
+                <li key={link.nameKey}>
                   <Link to={link.href} className="footer-link">
                     <i className={link.icon}></i>
-                    {link.name}
+                    {t(link.nameKey as any)}
                   </Link>
                 </li>
               ))}
@@ -122,19 +94,21 @@ export default function Footer() {
           
           {/* Support Links */}
           <div className="footer-links">
-            <h4 className="footer-heading">Support</h4>
+            <h4 className="footer-heading">
+              {t('footer_support') || 'Support'}
+            </h4>
             <ul className="footer-list">
               {[
-                { name: 'Help Center', href: '/help', icon: 'fas fa-question-circle' },
-                { name: 'Contact Us', href: '/contact', icon: 'fas fa-envelope' },
-                { name: 'Privacy Policy', href: '/privacy', icon: 'fas fa-shield-alt' },
-                { name: 'Terms of Service', href: '/terms', icon: 'fas fa-file-contract' },
-                { name: 'Cookies', href: '/cookies', icon: 'fas fa-cookie' }
+                { nameKey: 'help_center', href: '/help', icon: 'fas fa-question-circle' },
+                { nameKey: 'contact_us', href: '/contact', icon: 'fas fa-envelope' },
+                { nameKey: 'privacy_policy', href: '/privacy', icon: 'fas fa-shield-alt' },
+                { nameKey: 'terms_of_service', href: '/terms', icon: 'fas fa-file-contract' },
+                { nameKey: 'cookies', href: '/cookies', icon: 'fas fa-cookie' }
               ].map((link) => (
-                <li key={link.name}>
+                <li key={link.nameKey}>
                   <Link to={link.href} className="footer-link">
                     <i className={link.icon}></i>
-                    {link.name}
+                    {t(link.nameKey as any)}
                   </Link>
                 </li>
               ))}
@@ -145,12 +119,18 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="footer-bottom">
           <p className="footer-copyright">
-            © {new Date().getFullYear()} IDEAS Platform. All rights reserved.
+            © {new Date().getFullYear()} IDEAS Platform. {t('all_rights_reserved') || 'All rights reserved.'}
           </p>
           <div className="footer-legal">
-            <Link to="/privacy" className="legal-link">Privacy</Link>
-            <Link to="/terms" className="legal-link">Terms</Link>
-            <Link to="/cookies" className="legal-link">Cookies</Link>
+            <Link to="/privacy" className="legal-link">
+              {t('privacy') || 'Privacy'}
+            </Link>
+            <Link to="/terms" className="legal-link">
+              {t('terms') || 'Terms'}
+            </Link>
+            <Link to="/cookies" className="legal-link">
+              {t('cookies') || 'Cookies'}
+            </Link>
           </div>
         </div>
       </div>

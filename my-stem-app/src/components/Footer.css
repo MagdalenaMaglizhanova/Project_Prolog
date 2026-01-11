@@ -26,79 +26,86 @@
   gap: 1.5rem;
 }
 
-/* Footer Logo - Същите стилове като в хедъра */
-/* Footer Logo - Същите стилове като в хедъра */
+/* Footer Logo with WHITE background and Lightbulb */
 .footer-logo {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   text-decoration: none;
   color: inherit;
-  transition: transform 0.2s ease;
-}
-
-.footer-logo:hover {
-  transform: translateY(-1px);
 }
 
 .footer-logo .logo-wrapper {
   width: 50px;
   height: 50px;
-  position: relative;
-  transition: transform 0.3s ease;
-  background: white; /* ⬅️ ДОБАВЕНО - бял фон за контраст */
-  border-radius: 12px; /* ⬅️ ДОБАВЕНО - същия border-radius */
-  padding: 3px; /* ⬅️ ДОБАВЕНО - малко padding */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* ⬅️ ДОБАВЕНО - по-силен shadow */
+  background: white;
+  border-radius: 12px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid #e2e8f0;
 }
 
-.footer-logo:hover .logo-wrapper {
-  transform: scale(1.05);
-}
-
-.footer-logo .logo-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 10px; /* ⬅️ Променено от 12px на 10px за визуален контраст */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.footer-logo .logo-fallback {
+.lightbulb-icon {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  color: white;
-  font-size: 1.3rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.footer-logo .logo-text-container {
+.lightbulb-icon .fa-lightbulb {
+  font-size: 1.5rem;
+  color: #3b82f6;
+  text-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+  transition: all 0.3s ease;
+}
+
+.footer-logo:hover .fa-lightbulb {
+  color: #2563eb;
+  transform: scale(1.1);
+  text-shadow: 0 0 8px rgba(37, 99, 235, 0.5);
+}
+
+.logo-text-container {
   display: flex;
   flex-direction: column;
 }
 
-.footer-logo .logo-text {
-  font-weight: 800;
-  font-size: 1.6rem;
-  color: #ffffff !important; /* ⬅️ Променено на бяло за тъмния фон */
+/* ОБНОВЕНО: По-видима дума IDEAS */
+.logo-text {
+  font-weight: 900; /* По-дебел шрифт */
+  font-size: 1.8rem; /* Повече мащаб */
+  color: #ffffff; /* Чист бял цвят */
   letter-spacing: -0.5px;
-  background: none !important;
-  _-webkit-background-clip: unset !important;
-  -webkit-text-fill-color: unset !important;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* ⬅️ ДОБАВЕНО - за по-добра четимост */
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.3); /* Леко сияние */
+  background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%); /* Градиент за блясък */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
 }
 
-.footer-logo .logo-subtitle {
-  font-size: 0.75rem;
+/* Добавяне на името IDEAS след логото, ако е необходимо за още по-добра видимост */
+.logo-text::after {
+  content: 'IDEAS';
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: rgba(255, 255, 255, 0.1);
+  z-index: -1;
+  filter: blur(2px);
+}
+
+.logo-subtitle {
+  font-size: 0.85rem; /* Повече мащаб за субтитъра */
   font-weight: 600;
-  color: #cbd5e1; /* ⬅️ Променено на по-светло сиво */
-  margin-top: -3px;
+  color: #e2e8f0; /* По-светло сиво за по-добра видимост */
+  margin-top: -2px;
   letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .footer-description {
@@ -108,6 +115,7 @@
   max-width: 300px;
 }
 
+/* Social Links - GitHub/LinkedIn Style */
 .social-links {
   display: flex;
   gap: 0.75rem;
@@ -116,26 +124,33 @@
 .social-button {
   width: 40px;
   height: 40px;
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px solid #334155;
-  background: rgba(255, 255, 255, 0.05);
-  color: #cbd5e1;
+  background: #f8fafc;
+  color: #475569;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 1.1rem;
   text-decoration: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .social-button:hover {
-  background: rgba(59, 130, 246, 0.2);
-  border-color: #3b82f6;
-  color: white;
+  background: #ffffff;
+  border-color: #cbd5e1;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
+
+/* Specific hover colors for each platform */
+.social-button:hover .fa-github { color: #000000; }
+.social-button:hover .fa-linkedin-in { color: #0077b5; }
+.social-button:hover .fa-twitter { color: #1da1f2; }
+.social-button:hover .fa-facebook-f { color: #1877f2; }
+.social-button:hover .fa-instagram { color: #e4405f; }
 
 /* Footer Links */
 .footer-links {
@@ -149,6 +164,7 @@
   font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .footer-list {
@@ -156,6 +172,12 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-list li {
+  margin: 0;
 }
 
 .footer-link {
@@ -187,6 +209,7 @@
 .footer-copyright {
   color: #94a3b8;
   font-size: 0.9rem;
+  margin: 0;
 }
 
 .footer-legal {
@@ -203,6 +226,44 @@
 
 .legal-link:hover {
   color: #60a5fa;
+}
+
+/* Тъмна тема стилове */
+:global(.dark) .footer {
+  background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+}
+
+:global(.dark) .logo-text {
+  background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+}
+
+:global(.dark) .logo-subtitle {
+  color: #e2e8f0;
+}
+
+:global(.dark) .footer-heading {
+  color: #f8fafc;
+}
+
+:global(.dark) .footer-link {
+  color: #cbd5e1;
+}
+
+:global(.dark) .footer-link:hover {
+  color: #93c5fd;
+}
+
+:global(.dark) .footer-copyright,
+:global(.dark) .legal-link {
+  color: #94a3b8;
+}
+
+:global(.dark) .legal-link:hover {
+  color: #93c5fd;
 }
 
 /* Responsive Design */
@@ -224,6 +285,10 @@
   .footer-legal {
     justify-content: center;
   }
+  
+  .logo-text {
+    font-size: 1.6rem; /* Малко по-малко за мобилни устройства */
+  }
 }
 
 @media (max-width: 480px) {
@@ -235,51 +300,66 @@
     gap: 1.5rem;
   }
   
-  /* Responsive adjustments for footer logo */
   .footer-logo .logo-wrapper {
     width: 45px;
     height: 45px;
   }
   
-  .footer-logo .logo-fallback {
-    width: 45px;
-    height: 45px;
-    font-size: 1.2rem;
+  .social-button {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
   }
   
-  .footer-logo .logo-text {
+  .logo-text {
     font-size: 1.4rem;
   }
   
-  .footer-logo .logo-subtitle {
-    font-size: 0.7rem;
+  .logo-subtitle {
+    font-size: 0.75rem;
   }
 }
 
-/* Social Icons */
-.social-icon-img {
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
-  filter: brightness(0.8);
-  transition: all 0.3s ease;
+/* Focus states for accessibility */
+.footer-link:focus-visible,
+.legal-link:focus-visible,
+.social-button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
-.social-button:hover .social-icon-img {
-  filter: brightness(1);
-  transform: scale(1.1);
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .footer-link,
+  .social-button,
+  .legal-link {
+    transition: none;
+  }
+  
+  .footer-link:hover {
+    transform: none;
+  }
+  
+  .social-button:hover {
+    transform: none;
+  }
+  
+  .footer-logo:hover .fa-lightbulb {
+    transform: none;
+  }
 }
 
-/* Ensure proper alignment */
-.social-button {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Optional: Glow animation for lightbulb */
+.lightbulb-icon.glow .fa-lightbulb {
+  animation: gentleGlow 2s ease-in-out infinite alternate;
 }
 
-.social-button i {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+@keyframes gentleGlow {
+  from {
+    text-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+  }
+  to {
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 15px rgba(59, 130, 246, 0.4);
+  }
 }

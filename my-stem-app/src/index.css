@@ -1,7 +1,8 @@
+@tailwind utilities;
+
 /* ===========================
    Global Reset & Base Styles
    =========================== */
-
 * {
   margin: 0;
   padding: 0;
@@ -10,58 +11,154 @@
 
 html, body {
   height: 100%;
-  font-family: "Inter", sans-serif;
-  background-color: #f5f6fa;
-  color: #1c1e21;
-}
-
-/* Scroll behavior */
-html {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   scroll-behavior: smooth;
 }
 
 /* ===========================
-   Root Variables
+   Root Variables (Light & Dark Theme)
    =========================== */
 :root {
+  /* Primary colors */
   --primary: #4a90e2;
   --primary-dark: #2774c4;
+
+  /* Text colors */
   --text-main: #1c1e21;
   --text-light: #666;
+  --text-color: var(--text-main);
+
+  /* Background colors */
   --bg-light: #ffffff;
   --bg-gray: #f1f2f6;
+  --bg-color: var(--bg-light);
+
+  /* Component backgrounds */
+  --card-bg: #ffffff;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --primary: #60a5fa;
+  --primary-dark: #2563eb;
+
+  --text-main: #f5f6fa;
+  --text-light: #aaa;
+  --text-color: var(--text-main);
+
+  --bg-light: #1c1e21;
+  --bg-gray: #2c2f33;
+  --bg-color: var(--bg-light);
+
+  --card-bg: #2c2f33;
 }
 
 /* ===========================
-   Utility Classes
+   Custom Components & Utilities
    =========================== */
 
-/* Layout helpers */
-.full-height {
-  min-height: 100vh;
+/* Custom container (Tailwind + own control) */
+.custom-container {
+  @apply container mx-auto px-4 sm:px-6 lg:px-8;
 }
 
-.flex {
-  display: flex;
+/* Custom button styles */
+.btn-custom {
+  @apply inline-flex items-center justify-center px-4 py-2 rounded-md font-medium transition-all duration-200;
+  background-color: var(--primary);
+  color: white;
 }
 
-.flex-col {
-  flex-direction: column;
+.btn-custom:hover {
+  background-color: var(--primary-dark);
 }
 
-.flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Example: dark mode support for buttons */
+[data-theme="dark"] .btn-custom {
+  color: var(--text-color);
 }
 
-/* Spacing helpers */
+/* Utility for fixed header padding */
 .pt-header {
   padding-top: 100px;
 }
 
-/* Text utilities */
-.text-center {
-  text-align: center;
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pt-header {
+    padding-top: 80px;
+  }
 }
 
+/* ===========================
+   Cards
+   =========================== */
+.card {
+  background-color: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* ===========================
+   Animations
+   =========================== */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+/* ===========================
+   Scrollbar Styles
+   =========================== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-gray);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+.pt-header {
+  padding-top: 100px;
+}
+
+@media (max-width: 768px) {
+  .pt-header {
+    padding-top: 80px;
+  }
+}
+
+.custom-container {
+  @apply container mx-auto px-4 sm:px-6 lg:px-8;
+}

@@ -1,27 +1,399 @@
 /* Register Page Styles */
+
+/* Базиран на ThemeContext - използваме .dark клас от document.documentElement */
+:root.dark .register-page,
+.register-page.dark-theme { /* За обратна съвместимост */
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #e2e8f0;
+}
+
+:root.dark .register-background,
+.register-page.dark-theme .register-background {
+  background: linear-gradient(135deg, #3730a3 0%, #7e22ce 100%);
+}
+
+:root.dark .register-content,
+.register-page.dark-theme .register-content {
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(51, 65, 85, 0.5);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+:root.dark .register-branding,
+.register-page.dark-theme .register-branding {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+}
+
+:root.dark .logo-text,
+.register-page.dark-theme .logo-text {
+  color: #f1f5f9;
+}
+
+:root.dark .logo-subtitle,
+.register-page.dark-theme .logo-subtitle {
+  color: #818cf8;
+}
+
+:root.dark .brand-title,
+.register-page.dark-theme .brand-title {
+  color: #f1f5f9;
+}
+
+:root.dark .brand-description,
+.register-page.dark-theme .brand-description {
+  color: #94a3b8;
+}
+
+:root.dark .brand-feature,
+.register-page.dark-theme .brand-feature {
+  color: #e2e8f0;
+}
+
+:root.dark .brand-feature i,
+.register-page.dark-theme .brand-feature i {
+  color: #818cf8;
+}
+
+:root.dark .success-stats,
+.register-page.dark-theme .success-stats {
+  border-top: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+:root.dark .stat-number,
+.register-page.dark-theme .stat-number {
+  color: #818cf8;
+}
+
+:root.dark .stat-label,
+.register-page.dark-theme .stat-label {
+  color: #94a3b8;
+}
+
+:root.dark .form-title,
+.register-page.dark-theme .form-title {
+  color: #f1f5f9;
+}
+
+:root.dark .form-subtitle,
+.register-page.dark-theme .form-subtitle {
+  color: #94a3b8;
+}
+
+:root.dark .form-label,
+.register-page.dark-theme .form-label {
+  color: #e2e8f0;
+}
+
+:root.dark .form-input,
+.register-page.dark-theme .form-input {
+  background: #1e293b;
+  border-color: #475569;
+  color: #e2e8f0;
+}
+
+:root.dark .form-input:focus,
+.register-page.dark-theme .form-input:focus {
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+:root.dark .form-input::placeholder,
+.register-page.dark-theme .form-input::placeholder {
+  color: #94a3b8;
+}
+
+:root.dark .terms-agreement,
+:root.dark .newsletter-subscription,
+.register-page.dark-theme .terms-agreement,
+.register-page.dark-theme .newsletter-subscription {
+  color: #94a3b8;
+}
+
+:root.dark .terms-agreement a,
+:root.dark .newsletter-subscription a,
+.register-page.dark-theme .terms-agreement a,
+.register-page.dark-theme .newsletter-subscription a {
+  color: #818cf8;
+}
+
+:root.dark .divider,
+.register-page.dark-theme .divider {
+  color: #64748b;
+}
+
+:root.dark .divider::before,
+.register-page.dark-theme .divider::before {
+  background: #334155;
+}
+
+:root.dark .divider span,
+.register-page.dark-theme .divider span {
+  background: #1e293b;
+}
+
+:root.dark .login-link,
+.register-page.dark-theme .login-link {
+  background: rgba(99, 102, 241, 0.1);
+  border-color: rgba(99, 102, 241, 0.3);
+  color: #a5b4fc;
+}
+
+:root.dark .login-link:hover,
+.register-page.dark-theme .login-link:hover {
+  border-color: #818cf8;
+  background: rgba(99, 102, 241, 0.2);
+}
+
+:root.dark .register-footer,
+.register-page.dark-theme .register-footer {
+  color: #64748b;
+}
+
+:root.dark .register-footer a,
+.register-page.dark-theme .register-footer a {
+  color: #818cf8;
+}
+
+/* Floating shapes в тъмна тема */
+:root.dark .shape,
+.register-page.dark-theme .shape {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Title gradient в тъмна тема */
+:root.dark .title-gradient,
+.register-page.dark-theme .title-gradient {
+  background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Theme Toggle и Language Selector */
+:root.dark .theme-toggle,
+.register-page.dark-theme .theme-toggle {
+  background: linear-gradient(135deg, #3730a3 0%, #7e22ce 100%);
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+:root.dark .language-current,
+.register-page.dark-theme .language-current {
+  background: rgba(30, 41, 59, 0.9);
+  color: #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:root.dark .language-options,
+.register-page.dark-theme .language-options {
+  background: #1e293b;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  border: 1px solid #334155;
+}
+
+:root.dark .language-option,
+.register-page.dark-theme .language-option {
+  color: #e2e8f0;
+}
+
+:root.dark .language-option:hover,
+.register-page.dark-theme .language-option:hover {
+  background: rgba(99, 102, 241, 0.2);
+}
+
+:root.dark .language-option.active,
+.register-page.dark-theme .language-option.active {
+  background: linear-gradient(135deg, #3730a3 0%, #7e22ce 100%);
+}
+
+:root.dark .register-button,
+.register-page.dark-theme .register-button {
+  background: linear-gradient(135deg, #3730a3 0%, #7e22ce 100%);
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+:root.dark .register-button:hover:not(:disabled),
+.register-page.dark-theme .register-button:hover:not(:disabled) {
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
+}
+
+/* Обнови стилове за грешки в тъмна тема */
+:root.dark .error-message,
+.register-page.dark-theme .error-message {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.3);
+  color: #f87171;
+}
+
+/* Обнови стилове за чекбоксове в тъмна тема */
+:root.dark .terms-agreement input,
+:root.dark .newsletter-subscription input,
+.register-page.dark-theme .terms-agreement input,
+.register-page.dark-theme .newsletter-subscription input {
+  accent-color: #818cf8;
+}
+
+/* Контрастни подобрения за достъпност */
+:root.dark .register-button:focus-visible,
+.register-page.dark-theme .register-button:focus-visible {
+  outline-color: #818cf8;
+}
+
+:root.dark .form-input:focus-visible,
+.register-page.dark-theme .form-input:focus-visible {
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.4);
+}
+
+/* ОСНОВНИ СТИЛОВЕ */
 .register-page {
   min-height: 100vh;
-  padding: 80px 0;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease;
 }
 
-.register-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-}
-
-.register-gradient {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+/* Theme Toggle and Language Selector Styles */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.theme-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.language-selector {
+  position: fixed;
+  top: 20px;
+  right: 74px;
+  z-index: 1001;
+}
+
+.language-dropdown {
+  position: relative;
+}
+
+.language-current {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: none;
+  border-radius: 12px;
+  color: #2c3e50;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.language-current:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.language-flag {
+  font-size: 1.2rem;
+}
+
+.language-label {
+  font-weight: 700;
+}
+
+.language-current i {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.language-options {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  min-width: 160px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1001;
+}
+
+.language-dropdown:hover .language-options {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.language-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #2c3e50;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.language-option:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.language-option.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.language-name {
+  flex: 1;
+}
+
+/* Контрастни подобрения за достъпност */
+.register-button:focus-visible {
+  outline: 3px solid #667eea;
+  outline-offset: 2px;
+}
+
+.form-input:focus-visible {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+}
+
+/* Анимации за появяване */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .register-container {
@@ -31,7 +403,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 80px 2rem 2rem;
+  animation: fadeIn 0.6s ease-out;
 }
 
 .register-content {
@@ -46,6 +419,7 @@
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: fadeIn 0.8s ease-out 0.2s both;
 }
 
 /* Branding Side */
@@ -252,12 +626,17 @@
   font-size: 1rem;
   transition: all 0.3s ease;
   background: white;
+  color: #2c3e50;
 }
 
 .form-input:focus {
   outline: none;
   border-color: #667eea;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-input::placeholder {
+  color: #999;
 }
 
 .form-options {
@@ -388,15 +767,28 @@
   text-align: center;
   font-size: 0.8rem;
   color: #999;
+  padding-top: 1rem;
+  border-top: 1px solid #e8ecef;
 }
 
-/* Floating shapes animation (reuse from login) */
+.register-footer a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Floating shapes animation */
 .floating-shapes {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  pointer-events: none;
 }
 
 .shape {
@@ -448,6 +840,7 @@
   .register-content {
     grid-template-columns: 1fr;
     gap: 0;
+    margin: 1rem;
   }
   
   .register-branding {
@@ -466,15 +859,53 @@
   .success-stats {
     justify-content: center;
   }
+  
+  .language-selector {
+    right: 70px;
+  }
+  
+  .theme-toggle {
+    right: 20px;
+  }
+  
+  .register-container {
+    padding: 70px 1rem 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .register-container {
+    padding: 60px 1rem 1rem;
+  }
+  
+  .language-selector {
+    top: 15px;
+    right: 64px;
+  }
+  
+  .theme-toggle {
+    top: 15px;
+    right: 15px;
+  }
+  
+  .language-current {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .language-flag {
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 480px) {
   .register-container {
-    padding: 1rem;
+    padding: 50px 0.5rem 0.5rem;
   }
   
   .register-content {
     border-radius: 16px;
+    margin: 0.5rem;
   }
   
   .register-branding,
@@ -493,5 +924,42 @@
   .success-stats {
     flex-direction: column;
     gap: 1rem;
+  }
+  
+  .language-selector {
+    right: 60px;
+  }
+  
+  .language-current {
+    padding: 6px 10px;
+  }
+  
+  .language-label {
+    display: none;
+  }
+  
+  .language-flag {
+    font-size: 1.1rem;
+  }
+  
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}
+
+/* Адаптация за тъмна тема в мобилни устройства */
+@media (max-width: 480px) and (prefers-color-scheme: dark) {
+  :root:not(.dark) .language-current,
+  .register-page:not(.dark-theme) .language-current {
+    background: rgba(30, 41, 59, 0.9);
+    color: #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  :root:not(.dark) .theme-toggle,
+  .register-page:not(.dark-theme) .theme-toggle {
+    background: linear-gradient(135deg, #3730a3 0%, #7e22ce 100%);
   }
 }

@@ -1,11 +1,16 @@
-import _React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from './context/ThemeContext';
+import { LanguageProvider } from './context/LanguageContext';
+import { AuthProvider } from './context/AuthContext';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import PrologChat from './pages/PrologChat';
+import Topics from './pages/Topics';
+
 import './App.css';
 
 function App() {
@@ -35,21 +40,28 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <Routes>
-        <Route path="/" element={<Layout><Home /></Layout>} />
-        <Route path="/login" element={<Layout><Login /></Layout>} />
-        <Route path="/register" element={<Layout><Register /></Layout>} />
-        <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
-        
-        {/* Динамичен Prolog Chat Route */}
-        <Route path="/chat/:codeId?" element={<Layout><PrologChat /></Layout>} />
-        
-        {/* Допълнителни routes */}
-        <Route path="/topics" element={<Layout><Home /></Layout>} />
-        <Route path="/submissions" element={<Layout><Home /></Layout>} />
-      </Routes>
-    </div>
+    <ThemeProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Layout><Home /></Layout>} />
+            <Route path="/login" element={<Layout><Login /></Layout>} />
+            <Route path="/register" element={<Layout><Register /></Layout>} />
+            <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
+            
+            {/* Topics маршрути */}
+            <Route path="/topics" element={<Layout><Topics /></Layout>} />
+            <Route path="/topics/:category" element={<Layout><Topics /></Layout>} />
+            
+            {/* Динамичен Prolog Chat Route */}
+            <Route path="/chat/:codeId?" element={<Layout><PrologChat /></Layout>} />
+            
+            {/* Допълнителни routes */}
+            <Route path="/submissions" element={<Layout><Home /></Layout>} />
+          </Routes>
+        </AuthProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }
 
